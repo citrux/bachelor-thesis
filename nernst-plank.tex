@@ -1,0 +1,117 @@
+\documentclass{hedwork}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[derivative,vectors]{hedmaths}
+\begin{document}
+\section{Уравнение Нернста-Планка}
+    Уравнение Нернста-Планка имеет вид
+    \begin{equation}
+        j = -\frac{z}{|z|}ukT\pder{n}{x} - |z|nue\pder{\phi}{x}.
+        \label{eq:nernst-plank}
+    \end{equation}
+    Оно позволяет найти плотность ионного тока. При этом считается, что по всей
+    мембране плотность тока одинакова, то есть рассматривается установившийся
+    режим. Так как меня интересует переохдный процесс, приводящий к формированию
+    равновесных распреелений концентрации и потенциала в мембране, то мне
+    необходимо ввести в это уравнение время. Для этого можно воспользоваться
+    уравнением непрерывности:
+    \begin{equation}
+        \pder{\rho}{t} + \divergence\vec{j} = 0.
+    \end{equation}
+    Учитывая, что \( \rho = nez \), для одномерного случая получим уравнение
+    \begin{equation}
+        \pder{n}{t} = \frac{ukT}{e|z|}\ppder{n}{x} +
+            \frac{z}{|z|}u\pder{\phi}{x}\pder{n}{x} +
+            \frac{z}{|z|}u\ppder{\phi}{x}n.
+        \label{eq:nernst-plank_with_time}
+    \end{equation}
+    Попрбуем теперь узнать характерное время, необходимое на установление
+    равновесных распределений концентраций. Для этого будем считать, что
+    потенциал в начальный момент времени уже имеет равновесное
+    распределение. Рассмотрим 2 простых случая, особенно часто употребляемых в
+    биофизике:
+    \begin{enumerate}
+        \item \textbf{линейное распределение потенциала}\\
+            в этом случае
+            \[
+                \pder{\phi}{x} = -E = \const
+            \]
+            и уравнение (\ref{eq:nernst-plank_with_time}) упрощается
+            \begin{equation}
+                \pder{n}{t} = \frac{ukT}{e|z|}\ppder{n}{x} -
+                    \frac{z}{|z|}uE\pder{n}{x}.
+            \end{equation}
+        \item \textbf{линейное распределение концентрации}\\
+            в этом случае сначала необходимо из уравнения
+            (\ref{eq:nernst-plank}) получить равновесное распределение
+            потенциала:
+            \[
+                n = n_0 + n_1 x,\ j = -\pder{z}{|z|}ukTn_1 -
+                    |z|ue(n_0+n_1x)\pder{\phi}{x},
+            \]
+            \[
+                \pder{\phi}{x} = -\frac{\frac{z}{|z|}ukTn_1+j}{|z|ue(n_0+n_1x)}.
+            \]
+            Подставляя в уравнение (\ref{eq:nernst-plank_with_time}), получаем
+            \begin{equation}
+                \pder{n}{t} = \frac{ukT}{e|z|}\ppder{n}{x} -
+                \frac{z}{|z|}u\frac{zukTn_1+|z|j}{z^2ue(n_0+n_1x)}\pder{n}{x}+
+                \frac{|z|}{z}u\frac{zukTn_1+|z|j}{z^2ue}
+                \frac{n_1}{(n_0+n_1x)^2}n.
+            \end{equation}
+    \end{enumerate}
+
+\section{Приближение постоянного поля}
+            Для удобства в уравнении
+            \[
+                \pder{n}{t} = \frac{ukT}{e|z|}\ppder{n}{x} -
+                    \frac{z}{|z|}uE\pder{n}{x}.
+            \]
+            введём следующие обозначения
+            \[
+                \frac{ukT}{e|z|} = \alpha^2,\quad \frac{z}{|z|}uE = v.
+            \]
+            С учётом этого, уравнение принимает вид
+            \[
+                \pder{n}{t} = \alpha^2\ppder{n}{x} - v\pder{n}{x}.
+            \]
+            Это уравнение конвективной диффузии. Поставим задачу Неймана для
+            этого дифференциального уравнения в частных производных -- будем
+            считать концентрации на краях мембраны постоянными, так как они
+            определяются концентрациями в омывающих растворах, а начальное
+            условие -- нулевым, то есть будем считать, что сначала мембрана
+            свободна от ионов. Задача приобретает вид
+            \begin{align*}
+                & \pder{n}{t} = \alpha^2\ppder{n}{x} - v\pder{n}{x},\ x\in(0,d)\\
+                & n(0, t) = n_{out},\ t>0 \\
+                & n(d, t) = n_{in},\ t>0 \\
+                & n(x, 0) = 0,\ x\in(0,d).
+            \end{align*}
+            Для удобства решения обезразмерим её:
+            \( x = \xi d, t = \tau d^2 \alpha^{-2} \)
+            \begin{align*}
+                & \pder{n}{\tau} = \ppder{n}{\xi} -
+                    w\pder{n}{\xi},\ w = \frac{vd}{\alpha^2},\ \xi\in(0,1) \\
+                & n(0, \tau) = n_{out},\ \tau>0 \\
+                & n(1, \tau) = n_{in},\ \tau>0 \\
+                & n(\xi, 0) = 0,\ \xi\in(0,1).
+            \end{align*}
+            Теперь построим разностную схему для решения этого уравнения.
+            Воспользуемся явной схемой
+            \[
+                \frac{n(\xi_i,\tau_{j+1}) - n(\xi_i, \tau_j)}{\Delta\tau} =
+                \frac{n(\xi_{i+1},\tau_j) - 2n(\xi_i, \tau_j) +
+                n(\xi_{i-1},\tau_j)}{\Delta\xi^2} -
+                w\frac{n(\xi_{i+1},\tau_j) - n(\xi_{i-1}, \tau_j)}{2\Delta\xi}.
+            \]
+            Если теперь явно выразить значение на следующем временном шаге через
+            значение на предыдущем, получим
+            \begin{gather*}
+                n(\xi_i,\tau_{j+1}) =
+                [1-2r]n(\xi_i, \tau_j) +
+                r\left(
+                    [1 - s]n(\xi_{i+1},\tau_j) + [1 + s]n(\xi_{i-1},\tau_j)
+                \right),\\
+                r = \frac{\Delta\tau}{\Delta\xi^2}, s = \frac{w\Delta\xi}{2}.
+            \end{gather*}
+\end{document}
