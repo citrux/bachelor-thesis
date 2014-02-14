@@ -62,56 +62,106 @@
     \end{enumerate}
 
 \section{Приближение постоянного поля}
-            Для удобства в уравнении
-            \[
-                \pder{n}{t} = \frac{ukT}{e|z|}\ppder{n}{x} -
-                    \frac{z}{|z|}uE\pder{n}{x}.
-            \]
-            введём следующие обозначения
-            \[
-                \frac{ukT}{e|z|} = \alpha^2,\quad \frac{z}{|z|}uE = v.
-            \]
-            С учётом этого, уравнение принимает вид
-            \[
-                \pder{n}{t} = \alpha^2\ppder{n}{x} - v\pder{n}{x}.
-            \]
-            Это уравнение конвективной диффузии. Поставим задачу Неймана для
-            этого дифференциального уравнения в частных производных -- будем
-            считать концентрации на краях мембраны постоянными, так как они
-            определяются концентрациями в омывающих растворах, а начальное
-            условие -- нулевым, то есть будем считать, что сначала мембрана
-            свободна от ионов. Задача приобретает вид
-            \begin{align*}
-                & \pder{n}{t} = \alpha^2\ppder{n}{x} - v\pder{n}{x},\ x\in(0,d)\\
-                & n(0, t) = n_{out},\ t>0 \\
-                & n(d, t) = n_{in},\ t>0 \\
-                & n(x, 0) = 0,\ x\in(0,d).
-            \end{align*}
-            Для удобства решения обезразмерим её:
-            \( x = \xi d, t = \tau d^2 \alpha^{-2} \)
-            \begin{align*}
-                & \pder{n}{\tau} = \ppder{n}{\xi} -
-                    w\pder{n}{\xi},\ w = \frac{vd}{\alpha^2},\ \xi\in(0,1) \\
-                & n(0, \tau) = n_{out},\ \tau>0 \\
-                & n(1, \tau) = n_{in},\ \tau>0 \\
-                & n(\xi, 0) = 0,\ \xi\in(0,1).
-            \end{align*}
-            Теперь построим разностную схему для решения этого уравнения.
-            Воспользуемся явной схемой
-            \[
-                \frac{n(\xi_i,\tau_{j+1}) - n(\xi_i, \tau_j)}{\Delta\tau} =
-                \frac{n(\xi_{i+1},\tau_j) - 2n(\xi_i, \tau_j) +
-                n(\xi_{i-1},\tau_j)}{\Delta\xi^2} -
-                w\frac{n(\xi_{i+1},\tau_j) - n(\xi_{i-1}, \tau_j)}{2\Delta\xi}.
-            \]
-            Если теперь явно выразить значение на следующем временном шаге через
-            значение на предыдущем, получим
-            \begin{gather*}
-                n(\xi_i,\tau_{j+1}) =
-                [1-2r]n(\xi_i, \tau_j) +
-                r\left(
-                    [1 - s]n(\xi_{i+1},\tau_j) + [1 + s]n(\xi_{i-1},\tau_j)
-                \right),\\
-                r = \frac{\Delta\tau}{\Delta\xi^2}, s = \frac{w\Delta\xi}{2}.
-            \end{gather*}
+\subsection{Условие применимости}
+    В приближении постоянного поля стационарное распределение концентраций,
+    получаемая из уравнения Нернста-Планка, определяется зависимостью
+    \[
+        n(x) = \frac{(n_{out}e^\kappa - n_{in}) - (n_{out} -
+        n_{in})e^{\kappa\frac{x}{d}}}{e^\kappa - 1},\ \kappa = \frac{zeEd}{kT}.
+    \]
+    Ионы в мембране создают поле \( E_i \), причем это поле действует и на
+    сами ионы. Условием применимости может служить требование
+    \[
+        E_i^{max} \ll E.
+    \]
+    Определим поле \( E_i \). Для этого воспользуемся уравнением Максвелла
+    \[
+        \divergence\vec{E}_i = \pder{E_i}{x} = \frac{\rho}{\eps\eps_0}.
+    \]
+    Интегрируя его, получим
+    \begin{gather}
+        E_i(x) = E_i(0) + \frac{ez}{\eps\eps_0}\int_0^x n(\xi)d\xi = \nonumber\\
+        = E_i(0) + \frac{ez}{\eps\eps_0}\left[
+        \frac{n_{out}e^\kappa - n_{in}}{e^\kappa - 1}x - \frac{n_{out} -
+        n_{in}}{e^\kappa - 1}\frac{d}{\kappa}{e^{\kappa\frac{x}{d}} - 1}
+        \right].
+    \end{gather}
+    Так как поле создаётся плоскими слоями, в границах которых плотность заряда
+    постоянна, то на краях мембраны поле внутренних ионов будет иметь разное
+    направление, но одинаковую величину:
+    \begin{equation}
+        E_i(d) = -E_i(0) = E_i(0) + \frac{ez}{\eps\eps_0}\left[
+        \frac{n_{out}e^\kappa - n_{in}}{e^\kappa - 1}d - \frac{n_{out} -
+        n_{in}}{e^\kappa - 1}\frac{d}{\kappa}{e^\kappa - 1}
+        \right].
+    \end{equation}
+    Отсюда находим \( E_i(0) \) и подставляем в выражение для поля:
+    \begin{equation}
+        E_i = \frac{ez}{\eps\eps_0}\left[
+        \frac{n_{out}e^\kappa - n_{in}}{e^\kappa - 1}\left(x-\frac{d}{2}\right)
+        - \frac{n_{out} - n_{in}}{e^\kappa - 1}\frac{d}{\kappa}
+        \left(e^{\kappa\frac{x}{d}} - \frac{e^\kappa + 1}{2}\right)
+        \right].
+    \end{equation}
+    Очевидно, что максимальное значение величина поля принимает вблизи краёв
+    мембраны:
+    \begin{equation}
+        \boxed{
+        E_i^{max} = \frac{ezd}{2\eps\eps_0\kappa(e^\kappa - 1)}\left\{
+            n_{out}[(\kappa - 1)e^\kappa + 1] - n_{in}[\kappa + 1 - e^\kappa]
+        \right\} \ll E.}
+    \end{equation}
+\subsection{Решение уравнения}
+    Для удобства в уравнении
+    \[
+        \pder{n}{t} = \frac{ukT}{e|z|}\ppder{n}{x} -
+            \frac{z}{|z|}uE\pder{n}{x}.
+    \]
+    введём следующие обозначения
+    \[
+        \frac{ukT}{e|z|} = \alpha^2,\quad \frac{z}{|z|}uE = v.
+    \]
+    С учётом этого, уравнение принимает вид
+    \[
+        \pder{n}{t} = \alpha^2\ppder{n}{x} - v\pder{n}{x}.
+    \]
+    Это уравнение конвективной диффузии. Поставим задачу Неймана для
+    этого дифференциального уравнения в частных производных -- будем
+    считать концентрации на краях мембраны постоянными, так как они
+    определяются концентрациями в омывающих растворах, а начальное
+    условие -- нулевым, то есть будем считать, что сначала мембрана
+    свободна от ионов. Задача приобретает вид
+    \begin{align*}
+        & \pder{n}{t} = \alpha^2\ppder{n}{x} - v\pder{n}{x},\ x\in(0,d)\\
+        & n(0, t) = n_{out},\ t>0 \\
+        & n(d, t) = n_{in},\ t>0 \\
+        & n(x, 0) = 0,\ x\in(0,d).
+    \end{align*}
+    Для удобства решения обезразмерим её:
+    \( x = \xi d, t = \tau d^2 \alpha^{-2} \)
+    \begin{align*}
+        & \pder{n}{\tau} = \ppder{n}{\xi} -
+            w\pder{n}{\xi},\ w = \frac{vd}{\alpha^2},\ \xi\in(0,1) \\
+        & n(0, \tau) = n_{out},\ \tau>0 \\
+        & n(1, \tau) = n_{in},\ \tau>0 \\
+        & n(\xi, 0) = 0,\ \xi\in(0,1).
+    \end{align*}
+    Теперь построим разностную схему для решения этого уравнения.
+    Воспользуемся явной схемой
+    \[
+        \frac{n(\xi_i,\tau_{j+1}) - n(\xi_i, \tau_j)}{\Delta\tau} =
+        \frac{n(\xi_{i+1},\tau_j) - 2n(\xi_i, \tau_j) +
+        n(\xi_{i-1},\tau_j)}{\Delta\xi^2} -
+        w\frac{n(\xi_{i+1},\tau_j) - n(\xi_{i-1}, \tau_j)}{2\Delta\xi}.
+    \]
+    Если теперь явно выразить значение на следующем временном шаге через
+    значение на предыдущем, получим
+    \begin{gather*}
+        n(\xi_i,\tau_{j+1}) =
+        [1-2r]n(\xi_i, \tau_j) +
+        r\left(
+            [1 - s]n(\xi_{i+1},\tau_j) + [1 + s]n(\xi_{i-1},\tau_j)
+        \right),\\
+        r = \frac{\Delta\tau}{\Delta\xi^2}, s = \frac{w\Delta\xi}{2}.
+    \end{gather*}
 \end{document}
