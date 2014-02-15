@@ -165,4 +165,34 @@
         \right),\\
         r = \frac{\Delta\tau}{\Delta\xi^2}, s = \frac{w\Delta\xi}{2}.
     \end{gather*}
+
+\section{Приближение постоянного градиента концентрации}
+\subsection{Условие применимости}
+    Как и в приближении постоянного поля достаточно потребовать малости поля
+    ионов в мембране по сравнению с внешним полем
+    \[
+        E = \frac{\frac{z}{|z|}ukTn_1+j}{|z|ue(n_0+n_1x)}.
+    \]
+    Внешнее поле принимает минимальное значение на том краю, где концентрация
+    ионов больше:
+    \[
+        E_{min} = \frac{\frac{z}{|z|}ukTn_1+j}{|z|ue\max(n_{in}, n_{out})}.
+    \]
+    Для собственного поля ионов имеем
+    \begin{gather}
+        E_i(x) = E_i(0) + \frac{ez}{\eps\eps_0}\int_0^x n(\xi)d\xi = \nonumber\\
+        = E_i(0) + \frac{ez}{\eps\eps_0}\left(
+        n_{out} x - \frac{n_{out} - n_{in}}{d}\frac{x^2}{2}\right).
+    \end{gather}
+    Максимальное значение оно принимает на краях мембраны. Поле ионов имеет вид
+    \begin{equation}
+        E_i(x) = \frac{ez}{\eps\eps_0}\left[
+        n_{out} \left(x-\frac{d}{2}\right) - \frac{n_{out} - n_{in}}{2d}
+        \left(x^2 - \frac{d^2}{2}\right)
+        \right].
+    \end{equation}
+    \begin{equation}
+        \boxed{
+        E_i^{max} = \frac{ezd}{\eps\eps_0}\frac{n_{in}+n_{out}}{4} \ll E_{min}.}
+    \end{equation}
 \end{document}
