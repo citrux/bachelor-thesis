@@ -207,4 +207,57 @@
         \boxed{
         E_i^{max} = \frac{ezd}{\eps\eps_0}\frac{n_{in}+n_{out}}{4} \ll E_{min}.}
     \end{equation}
+
+\subsection{Решение уравнения}
+    Уравнение
+    \begin{gather}
+        \pder{n}{t} = \frac{ukT}{e|z|}\ppder{n}{x} -
+        \frac{z}{|z|}u\frac{\phi_0}{\ln\frac{n_{out}}{n_{in}}}
+        \frac{n_{in} - n_{out}}{d}
+        \frac{1}{n_{out} - \frac{n_{out} - n_{in}}{d} x}
+        \pder{n}{x} + \nonumber \\
+        + \frac{|z|}{z}u\frac{\phi_0}{\ln\frac{n_{out}}{n_{in}}}
+        \frac{(n_{in} - n_{out})^2}{d^2}
+        \frac{1}{(n_{out} - \frac{n_{out} - n_{in}}{d} x)^2}n.
+    \end{gather}
+    можно переписать в виде
+    \begin{equation}
+        \pder{n}{t} = D\ppder{n}{x} - vf(x)\pder{n}{x} + \frac{v}{d}f^2(x)n,
+    \end{equation}
+    где
+    \begin{equation}
+        D = \frac{ukT}{e|z|},\ v = \frac{z}{|z|}\frac{u}{d}
+        \frac{\phi_0}{\ln\frac{n_{out}}{n_{in}}},
+        \ f(x) = \frac{d}{x - n_{out}d / (n_{out}-n_{in})}.
+    \end{equation}
+    Это уравнение с переменными коэффициентами, в котором в свою очередь можно
+    уйти от конкретных размеров мембраны:
+    \begin{equation}
+        \pder{n}{\tau} = \ppder{n}{\xi} - wg(\xi)\pder{n}{\xi} + wg^2(\xi)n,
+    \end{equation}
+    где
+    \begin{equation}
+        \tau = \frac{D}{d^2}t,\ \xi = \frac{x}{d},\ w = \frac{vd}{D},
+        \ g(\xi) = \frac{1}{\xi - \frac{n_{out}}{n_{out} - n_{in}}}.
+    \end{equation}
+    Опять поставим для этого уравнения задачу Неймана:
+    \begin{align*}
+        & \pder{n}{\tau} = \ppder{n}{\xi} - wg(\xi)\pder{n}{\xi} + wg^2(\xi)n,
+            \ \xi\in(0,1) \\
+        & n(0, \tau) = n_{out},\ \tau>0 \\
+        & n(1, \tau) = n_{in},\ \tau>0 \\
+        & n(\xi, 0) = 0,\ \xi\in(0,1).
+    \end{align*}
+    Разностная схема имеет вид
+    \begin{gather*}
+        n(\xi_i,\tau_{j+1}) =
+        [1-2r+qg^2(\xi)]n(\xi_i, \tau_j) +\\
+        + r\left(
+            [1 - sg(\xi_i)]n(\xi_{i+1},\tau_j) +
+            [1 + sg(\xi_i)]n(\xi_{i-1},\tau_j)
+        \right),\\
+        r = \frac{\Delta\tau}{\Delta\xi^2}, s = \frac{w\Delta\xi}{2},
+        q = w\Delta\tau.
+    \end{gather*}
+
 \end{document}
