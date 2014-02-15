@@ -47,19 +47,25 @@
             (\ref{eq:nernst-plank}) получить равновесное распределение
             потенциала:
             \[
-                n = n_0 + n_1 x,\ j = -\pder{z}{|z|}ukTn_1 -
-                    |z|ue(n_0+n_1x)\pder{\phi}{x},
+                n = n_{out} - \frac{n_{out} - n_{in}}{d} x,\ j = -\pder{z}{|z|}ukTn_1 -
+                    |z|ue(n_{out}+n_1x)\pder{\phi}{x},
             \]
             \[
-                \pder{\phi}{x} = -\frac{\frac{z}{|z|}ukTn_1+j}{|z|ue(n_0+n_1x)}.
+                \pder{\phi}{x} = -\frac{\phi_0}{\ln\frac{n_{out}}{n_{in}}}
+                \frac{n_{in} - n_{out}}{d}
+                \frac{1}{n_{out} - \frac{n_{out} - n_{in}}{d} x}.
             \]
             Подставляя в уравнение (\ref{eq:nernst-plank_with_time}), получаем
-            \begin{equation}
+            \begin{gather}
                 \pder{n}{t} = \frac{ukT}{e|z|}\ppder{n}{x} -
-                \frac{z}{|z|}u\frac{zukTn_1+|z|j}{z^2ue(n_0+n_1x)}\pder{n}{x}+
-                \frac{|z|}{z}u\frac{zukTn_1+|z|j}{z^2ue}
-                \frac{n_1}{(n_0+n_1x)^2}n.
-            \end{equation}
+                \frac{z}{|z|}u\frac{\phi_0}{\ln\frac{n_{out}}{n_{in}}}
+                \frac{n_{in} - n_{out}}{d}
+                \frac{1}{n_{out} - \frac{n_{out} - n_{in}}{d} x}
+                \pder{n}{x} + \nonumber \\
+                + \frac{|z|}{z}u\frac{\phi_0}{\ln\frac{n_{out}}{n_{in}}}
+                \frac{(n_{in} - n_{out})^2}{d^2}
+                \frac{1}{(n_{out} - \frac{n_{out} - n_{in}}{d} x)^2}n.
+            \end{gather}
     \end{enumerate}
 
 \section{Приближение постоянного поля}
@@ -67,8 +73,8 @@
     В приближении постоянного поля стационарное распределение концентраций,
     получаемая из уравнения Нернста-Планка, определяется зависимостью
     \[
-        n(x) = \frac{(n_{out}e^\kappa - n_{in}) - (n_{out} -
-        n_{in})e^{\kappa\frac{x}{d}}}{e^\kappa - 1},\ \kappa = \frac{zeEd}{kT}.
+        n(x) = \frac{(n_{out}e^\alpha - n_{in}) - (n_{out} -
+        n_{in})e^{\alpha\frac{x}{d}}}{e^\alpha - 1},\ \alpha = \frac{zeEd}{kT}.
     \]
     Ионы в мембране создают поле \( E_i \), причем это поле действует и на
     сами ионы. Условием применимости может служить требование
@@ -83,8 +89,8 @@
     \begin{gather}
         E_i(x) = E_i(0) + \frac{ez}{\eps\eps_0}\int_0^x n(\xi)d\xi = \nonumber\\
         = E_i(0) + \frac{ez}{\eps\eps_0}\left[
-        \frac{n_{out}e^\kappa - n_{in}}{e^\kappa - 1}x - \frac{n_{out} -
-        n_{in}}{e^\kappa - 1}\frac{d}{\kappa}{e^{\kappa\frac{x}{d}} - 1}
+        \frac{n_{out}e^\alpha - n_{in}}{e^\alpha - 1}x - \frac{n_{out} -
+        n_{in}}{e^\alpha - 1}\frac{d}{\alpha}{e^{\alpha\frac{x}{d}} - 1}
         \right].
     \end{gather}
     Так как поле создаётся плоскими слоями, в границах которых плотность заряда
@@ -92,24 +98,24 @@
     направление, но одинаковую величину:
     \begin{equation}
         E_i(d) = -E_i(0) = E_i(0) + \frac{ez}{\eps\eps_0}\left[
-        \frac{n_{out}e^\kappa - n_{in}}{e^\kappa - 1}d - \frac{n_{out} -
-        n_{in}}{e^\kappa - 1}\frac{d}{\kappa}{e^\kappa - 1}
+        \frac{n_{out}e^\alpha - n_{in}}{e^\alpha - 1}d - \frac{n_{out} -
+        n_{in}}{e^\alpha - 1}\frac{d}{\alpha}{e^\alpha - 1}
         \right].
     \end{equation}
     Отсюда находим \( E_i(0) \) и подставляем в выражение для поля:
     \begin{equation}
         E_i = \frac{ez}{\eps\eps_0}\left[
-        \frac{n_{out}e^\kappa - n_{in}}{e^\kappa - 1}\left(x-\frac{d}{2}\right)
-        - \frac{n_{out} - n_{in}}{e^\kappa - 1}\frac{d}{\kappa}
-        \left(e^{\kappa\frac{x}{d}} - \frac{e^\kappa + 1}{2}\right)
+        \frac{n_{out}e^\alpha - n_{in}}{e^\alpha - 1}\left(x-\frac{d}{2}\right)
+        - \frac{n_{out} - n_{in}}{e^\alpha - 1}\frac{d}{\alpha}
+        \left(e^{\alpha\frac{x}{d}} - \frac{e^\alpha + 1}{2}\right)
         \right].
     \end{equation}
     Очевидно, что максимальное значение величина поля принимает вблизи краёв
     мембраны:
     \begin{equation}
         \boxed{
-        E_i^{max} = \frac{ezd}{2\eps\eps_0\kappa(e^\kappa - 1)}\left\{
-            n_{out}[(\kappa - 1)e^\kappa + 1] - n_{in}[\kappa + 1 - e^\kappa]
+        E_i^{max} = \frac{ezd}{2\eps\eps_0\alpha(e^\alpha - 1)}\left\{
+            n_{out}[(\alpha - 1)e^\alpha + 1] - n_{in}[\alpha + 1 - e^\alpha]
         \right\} \ll E.}
     \end{equation}
 \subsection{Решение уравнения}
@@ -120,11 +126,11 @@
     \]
     введём следующие обозначения
     \[
-        \frac{ukT}{e|z|} = \alpha^2,\quad \frac{z}{|z|}uE = v.
+        \frac{ukT}{e|z|} = D,\quad \frac{z}{|z|}uE = v.
     \]
     С учётом этого, уравнение принимает вид
     \[
-        \pder{n}{t} = \alpha^2\ppder{n}{x} - v\pder{n}{x}.
+        \pder{n}{t} = D\ppder{n}{x} - v\pder{n}{x}.
     \]
     Это уравнение конвективной диффузии. Поставим задачу Неймана для
     этого дифференциального уравнения в частных производных -- будем
@@ -133,16 +139,16 @@
     условие -- нулевым, то есть будем считать, что сначала мембрана
     свободна от ионов. Задача приобретает вид
     \begin{align*}
-        & \pder{n}{t} = \alpha^2\ppder{n}{x} - v\pder{n}{x},\ x\in(0,d)\\
+        & \pder{n}{t} = D\ppder{n}{x} - v\pder{n}{x},\ x\in(0,d)\\
         & n(0, t) = n_{out},\ t>0 \\
         & n(d, t) = n_{in},\ t>0 \\
         & n(x, 0) = 0,\ x\in(0,d).
     \end{align*}
     Для удобства решения обезразмерим её:
-    \( x = \xi d, t = \tau d^2 \alpha^{-2} \)
+    \( x = \xi d, t = \tau d^2 / D \)
     \begin{align*}
         & \pder{n}{\tau} = \ppder{n}{\xi} -
-            w\pder{n}{\xi},\ w = \frac{vd}{\alpha^2},\ \xi\in(0,1) \\
+            w\pder{n}{\xi},\ w = \frac{vd}{D},\ \xi\in(0,1) \\
         & n(0, \tau) = n_{out},\ \tau>0 \\
         & n(1, \tau) = n_{in},\ \tau>0 \\
         & n(\xi, 0) = 0,\ \xi\in(0,1).
@@ -171,12 +177,15 @@
     Как и в приближении постоянного поля достаточно потребовать малости поля
     ионов в мембране по сравнению с внешним полем
     \[
-        E = \frac{\frac{z}{|z|}ukTn_1+j}{|z|ue(n_0+n_1x)}.
+        E = \frac{\phi_0}{\ln\frac{n_{out}}{n_{in}}}
+            \frac{n_{in} - n_{out}}{d}
+            \frac{1}{n_{out} - \frac{n_{out} - n_{in}}{d} x}.
     \]
     Внешнее поле принимает минимальное значение на том краю, где концентрация
     ионов больше:
     \[
-        E_{min} = \frac{\frac{z}{|z|}ukTn_1+j}{|z|ue\max(n_{in}, n_{out})}.
+        E_{min} = \frac{\phi_0}{\ln\frac{n_{out}}{n_{in}}}
+            \frac{n_{in} - n_{out}}{d}\frac{1}{\max(n_{out}, n_{in})}.
     \]
     Для собственного поля ионов имеем
     \begin{gather}
