@@ -1,6 +1,7 @@
 \documentclass{hedwork}
 \usepackage[utf8]{inputenc}
 \usepackage[russian]{babel}
+\usepackage{graphicx}
 \usepackage[derivative,vectors]{hedmaths}
 \begin{document}
 \tableofcontents
@@ -172,6 +173,19 @@
         r = \frac{\Delta\tau}{\Delta\xi^2}, s = \frac{w\Delta\xi}{2}.
     \end{gather*}
 
+    Для иона натрия в мембране аксона кальмара результат представлен на
+    рисунке~\ref{fig:1}.
+    \begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=.7\textwidth]{plots/linear_field}
+    \end{center}
+    \caption{Процесс установления профиля концентрации в постоянном поле. Чёрные
+    кривые -- профили в различные моменты времени с шагом 5 нс, красная --
+    установившийся профиль.}
+    \label{fig:1}
+    \end{figure}
+
+
 \section{Приближение постоянного градиента концентрации}
 \subsection{Условие применимости}
     Как и в приближении постоянного поля достаточно потребовать малости поля
@@ -260,4 +274,15 @@
         q = w\Delta\tau.
     \end{gather*}
 
+    Решим её для иона натрия в мембране аксона кальмара. Результат представлен
+    на рисунке~\ref{fig:2}.
+    \begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=.7\textwidth]{plots/linear_conc}
+    \end{center}
+    \caption{Процесс установления линейного профиля концентрации. Чёрные кривые
+    -- профили в различные моменты времени с шагом 5 нс, красная --
+    установившийся линейный профиль.}
+    \label{fig:2}
+    \end{figure}
 \end{document}
