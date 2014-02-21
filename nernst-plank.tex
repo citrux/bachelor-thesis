@@ -285,4 +285,44 @@
     установившийся линейный профиль.}
     \label{fig:2}
     \end{figure}
+\newpage
+\section{Учёт поля ионов}
+    Запишем снова уравнение Нернста-Планка:
+    \begin{equation}
+        j = -\frac{z}{|z|}ukT\pder{n}{x} + |z|nueE.
+    \end{equation}
+    Поле \( E \) складывается из нескольких компонент: внешнего поля и полей,
+    создаваемых каждым из сортов ионов в мембране.
+    \begin{equation}
+        E = E_{ex} + \sum_{i} E_i.
+    \end{equation}
+    Так как задача плоская, то внешнее поле может быть только однородным.
+    Поле ионов связано с их концентрацией уравнением Максвелла:
+    \begin{equation}
+        \pder{E_i}{x} = \frac{n_iez}{\eps\eps_0},\quad
+        n_i = \frac{\eps\eps_0}{ez}\pder{E_i}{x}.
+    \end{equation}
+    Тогда парциальный ток ионов сорта \( i \) определяется выражением
+    \begin{equation}
+        j_i = \eps\eps_0
+            \left(-D\ppder{E_i}{x} + \frac{z}{|z|}uE\pder{E_i}{x}\right).
+        \label{eq:j_from_E}
+    \end{equation}
+    Эта система подобна саморазряжающемуся конденсатору -- в ней сумма тока
+    смещения и тока проводимости равна нулю, поэтому
+    \begin{equation}
+        j_i = -j_i^\text{см} = -\eps\eps_0\pder{E_i}{t}.
+        \label{eq:displacement-current}
+    \end{equation}
+    Подставляя \eqref{eq:displacement-current} в \eqref{eq:j_from_E}, получаем
+    систему уравнений конвективной диффузии для электрического поля:
+    \begin{equation}
+        \pder{E_i}{t} = D\ppder{E_i}{x} -
+        \frac{z}{|z|}u\left(E_{ex} + \sum_{i} E_i\right)\pder{E_i}{x}.
+    \end{equation}
+    Граничное условие для неё можно поставить в виде
+    \begin{equation}
+        \left.\pder{E_i}{x}\right|_{x=0} = \frac{ez}{\eps\eps_0}n_i(0),\quad
+        \left.\pder{E_i}{x}\right|_{x=d} = \frac{ez}{\eps\eps_0}n_i(d).
+    \end{equation}
 \end{document}
