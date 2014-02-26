@@ -297,15 +297,15 @@
         E = E_{ex} + \sum_{i} E_i.
     \end{equation}
     Так как задача плоская, то внешнее поле может быть только однородным.
-    Поле ионов связано с их концентрацией уравнением Максвелла:
+    Электрическое поле ионов связано с их концентрацией уравнением Максвелла:
     \begin{equation}
-        \pder{E_i}{x} = \frac{n_iez}{\eps\eps_0},\quad
-        n_i = \frac{\eps\eps_0}{ez}\pder{E_i}{x}.
+        \pder{E_i}{x} = \frac{n_iez_i}{\eps\eps_0},\quad
+        n_i = \frac{\eps\eps_0}{ez_i}\pder{E_i}{x}.
     \end{equation}
     Тогда парциальный ток ионов сорта \( i \) определяется выражением
     \begin{equation}
         j_i = \eps\eps_0
-            \left(-D\ppder{E_i}{x} + \frac{z}{|z|}uE\pder{E_i}{x}\right).
+            \left(-D_i\ppder{E_i}{x}+\frac{z_i}{|z_i|}u_iE\pder{E_i}{x}\right).
         \label{eq:j_from_E}
     \end{equation}
     Эта система подобна саморазряжающемуся конденсатору -- в ней сумма тока
@@ -317,12 +317,12 @@
     Подставляя \eqref{eq:displacement-current} в \eqref{eq:j_from_E}, получаем
     систему уравнений конвективной диффузии для электрического поля:
     \begin{equation}
-        \pder{E_i}{t} = D\ppder{E_i}{x} -
-        \frac{z}{|z|}u\left(E_{ex} + \sum_{k} E_k\right)\pder{E_i}{x}.
+        \pder{E_i}{t} = D_i\ppder{E_i}{x} -
+        \frac{z_i}{|z_i|}u_i\left(E_{ex} + \sum_{k} E_k\right)\pder{E_i}{x}.
     \end{equation}
     Граничное условие для неё можно поставить в виде
     \begin{equation}
-        \left.\pder{E_i}{x}\right|_{x=0} = \frac{ez}{\eps\eps_0}n_i(0),\quad
-        \left.\pder{E_i}{x}\right|_{x=d} = \frac{ez}{\eps\eps_0}n_i(d).
+        \left.\pder{E_i}{x}\right|_{x=0} = \frac{ez_i}{\eps\eps_0}n_i(0),\quad
+        \left.\pder{E_i}{x}\right|_{x=d} = \frac{ez_i}{\eps\eps_0}n_i(d).
     \end{equation}
 \end{document}
