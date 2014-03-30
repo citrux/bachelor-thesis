@@ -1,4 +1,5 @@
 DATE := $(shell date +%d-%m-%Y)
+CXXFLAGS := -std=c++11
 
 all: diploma.pdf
 
