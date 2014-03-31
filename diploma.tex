@@ -309,7 +309,9 @@
         \label{eq:j_from_E}
     \end{equation}
     Эта система подобна саморазряжающемуся конденсатору -- в ней сумма тока
-    смещения и тока проводимости равна нулю, поэтому
+    смещения и тока проводимости равна нулю\footnote{это нужно доказать строго,
+    причём нужно показать, что эти поля независимы от переменного внешнего поля
+    }, поэтому
     \begin{equation}
         j_i = -j_i^\text{см} = -\eps\eps_0\pder{E_i}{t}.
         \label{eq:displacement-current}
@@ -324,5 +326,50 @@
     \begin{equation}
         \left.\pder{E_i}{x}\right|_{x=0} = \frac{ez_i}{\eps\eps_0}n_i(0),\quad
         \left.\pder{E_i}{x}\right|_{x=d} = \frac{ez_i}{\eps\eps_0}n_i(d).
+    \end{equation}
+
+    Теперь положим, что внутриклеточная и внеклеточная среды электронейтральны и
+    нет внешнего переменного поля. Тогда уравнение принимает более простой вид:
+    \begin{equation}
+        \pder{E_i}{t} = D_i\ppder{E_i}{x} -
+        \frac{z_i}{|z_i|}u_i \sum_{k} E_k \pder{E_i}{x}.
+    \end{equation}
+    Тогда трансмембранный потенциал равен
+    \begin{equation}
+        \phi = \sum_k \int_0^d E_k dx,
+    \end{equation}
+    а распределение концентраций
+    \begin{equation}
+        n_k(x) = \frac{\eps\eps_0}{ez_k}\pder{E_k}{x}.
+    \end{equation}
+\subsection{Построение разностной схемы}
+    Построим явную разностную схему для системы уравнений
+    \begin{equation}
+        \pder{E_i}{t} = D_i\ppder{E_i}{x} -
+        \frac{z_i}{|z_i|}u_i \sum_{k} E_k \pder{E_i}{x}.
+    \end{equation}
+    Сначала введем безразмерную координату и время:
+    \begin{equation}
+        \xi = \frac{x}{d},\quad \tau = t\frac{D_1}{d^2}
+    \end{equation}
+    \begin{equation}
+        \pder{E_i}{\tau} = \frac{D_i}{D_1}\ppder{E_i}{\xi} -
+        \frac{z_i}{|z_i|}\frac{u_id}{D_1} \sum_{k} E_k \pder{E_i}{\xi}.
+    \end{equation}
+    Обозначая
+    \begin{equation}
+        a_i = \frac{D_i}{D_1},\quad b_i = \frac{z_i}{|z_i|}\frac{u_id}{D_1}
+    \end{equation}
+    получаем систему
+    \begin{equation}
+        \pder{E_i}{\tau} = a_i\ppder{E_i}{\xi} - b_i\sum_k E_k \pder{E_i}{\xi}.
+    \end{equation}
+    Заменняя дифференциальный операторы разностными, получаем
+    \begin{equation}
+        \frac{E_i(\xi_i, \tau_{j+1}) - E_i(\xi_i, \tau_j)}{\Delta\tau_j} =
+        a_i\frac{E_i(\xi_{i+1}, \tau_j) - 2E_i(\xi_i, \tau_j) +
+        E_i(\xi_{i-1}, \tau_j)}{\Delta\xi_i^2} -
+        b_i\sum_k E_k(\xi_i, \tau_j)
+        \frac{E_i(\xi_{i+1}, \tau_j) - E_i(\xi_{i-1}, \tau_j)}{2\Delta\xi_i}.
     \end{equation}
 \end{document}
