@@ -28,7 +28,7 @@ double z = 1;
 double D = u * k * T / q / abs(z);
 
 //# параметры разностной схемы
-size_t nodes = 201;
+size_t nodes = 101;
 double r = .25;  // # <.5 для сходимости схемы
 double dxi = 1.0 / ( nodes - 1 );
 double tau = 0;
@@ -76,7 +76,7 @@ int main(int argc, char const *argv[])
             new_E[new_E.size()-2] + dxi * thickness * dE(c_in);
         E = new_E;
         tau += dtau;
-        printf("%f\n", tau);
+        //printf("%f\n", tau);
     }
 
     FILE *data;

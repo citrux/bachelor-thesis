@@ -345,31 +345,55 @@
 \subsection{Построение разностной схемы}
     Построим явную разностную схему для системы уравнений
     \begin{equation}
-        \pder{E_i}{t} = D_i\ppder{E_i}{x} -
-        \frac{z_i}{|z_i|}u_i \sum_{k} E_k \pder{E_i}{x}.
+        \pder{E_l}{t} = D_l\ppder{E_l}{x} -
+        \frac{z_l}{|z_l|}u_l \sum_{k} E_k \pder{E_l}{x}.
     \end{equation}
     Сначала введем безразмерную координату и время:
     \begin{equation}
         \xi = \frac{x}{d},\quad \tau = t\frac{D_1}{d^2}
     \end{equation}
     \begin{equation}
-        \pder{E_i}{\tau} = \frac{D_i}{D_1}\ppder{E_i}{\xi} -
-        \frac{z_i}{|z_i|}\frac{u_id}{D_1} \sum_{k} E_k \pder{E_i}{\xi}.
+        \pder{E_l}{\tau} = \frac{D_l}{D_1}\ppder{E_l}{\xi} -
+        \frac{z_l}{|z_l|}\frac{u_ld}{D_1} \sum_{k} E_k \pder{E_l}{\xi}.
     \end{equation}
     Обозначая
     \begin{equation}
-        a_i = \frac{D_i}{D_1},\quad b_i = \frac{z_i}{|z_i|}\frac{u_id}{D_1}
+        a_l = \frac{D_l}{D_1},\quad b_l = \frac{z_l}{|z_l|}\frac{u_ld}{D_1}
     \end{equation}
     получаем систему
     \begin{equation}
-        \pder{E_i}{\tau} = a_i\ppder{E_i}{\xi} - b_i\sum_k E_k \pder{E_i}{\xi}.
+        \pder{E_l}{\tau} = a_l\ppder{E_l}{\xi} - b_l\sum_k E_k \pder{E_l}{\xi}.
     \end{equation}
     Заменняя дифференциальный операторы разностными, получаем
-    \begin{equation}
-        \frac{E_i(\xi_i, \tau_{j+1}) - E_i(\xi_i, \tau_j)}{\Delta\tau_j} =
-        a_i\frac{E_i(\xi_{i+1}, \tau_j) - 2E_i(\xi_i, \tau_j) +
-        E_i(\xi_{i-1}, \tau_j)}{\Delta\xi_i^2} -
-        b_i\sum_k E_k(\xi_i, \tau_j)
-        \frac{E_i(\xi_{i+1}, \tau_j) - E_i(\xi_{i-1}, \tau_j)}{2\Delta\xi_i}.
-    \end{equation}
+    \begin{align*}
+        \frac{E_l(\xi_i, \tau_{j+1}) - E_l(\xi_i, \tau_j)}{\Delta\tau_j} & =
+        a_l\frac{E_l(\xi_{i+1}, \tau_j) - 2E_l(\xi_i, \tau_j) +
+        E_l(\xi_{i-1}, \tau_j)}{\Delta\xi_i^2} -\\
+        & -b_l\sum_k E_k(\xi_i, \tau_j)
+        \frac{E_l(\xi_{i+1}, \tau_j) - E_l(\xi_{i-1}, \tau_j)}{2\Delta\xi_i}.
+    \end{align*}
+    Перегруппируя слагаемые, получаем
+    \begin{align*}
+        E_l(\xi_i, \tau_{j+1}) - E_l(\xi_i, \tau_j) & =
+        \frac{a_l\Delta\tau_j}{\Delta\xi_i^2}
+        [E_l(\xi_{i+1}, \tau_j) - 2E_l(\xi_i, \tau_j) + E_l(\xi_{i-1}, \tau_j)]
+        -\\
+        & - \frac{b_l\Delta\tau_j}{2\Delta\xi_i}
+        [E_l(\xi_{i+1}, \tau_j) - E_l(\xi_{i-1}, \tau_j)]
+        \sum_k E_k(\xi_i, \tau_j).
+    \end{align*}
+    Если сетка равномерна, то можно ввести обозначения
+    \[
+        A_l = \frac{a_l \Delta\tau}{\Delta\xi^2},\quad
+        B_l = \frac{b_l\Delta\tau}{2\Delta\xi}.
+    \]
+    Тогда уравнение можно преобразовать к виду
+    \begin{align*}
+        E_l(\xi_i, \tau_{j+1}) & = (1-2A_l)E_l(\xi_i, \tau_j) +\\
+        & +
+            \left[A_l - B_l\sum_k E_k(\xi_i,\tau_j)\right]E_l(\xi_{i+1},\tau_j)
+          + \\
+        & +
+            \left[A_l + B_l\sum_k E_k(\xi_i,\tau_j)\right]E_l(\xi_{i-1},\tau_j).
+    \end{align*}
 \end{document}
