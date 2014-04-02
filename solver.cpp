@@ -2,31 +2,35 @@
 #include <vector>
 #include <cmath>
 
+#define forn(i, n)     for ( size_t i = 0; i < n; i++ )
+#define formn(i, m, n) for ( size_t i = m; i < n; i++ )
+
 using namespace std;
 
 typedef vector<double> vd;
+typedef vector<vd> vvd;
 
 //# внешние параметры и постоянные
-double q = 1.6e-19;
-double F = 96485;
-double k = 1.38e-23;
-double T = 298;
-double eps0 = 8.85e-12;
+const double q = 1.6e-19;
+const double F = 96485;
+const double k = 1.38e-23;
+const double T = 298;
+const double eps0 = 8.85e-12;
 
 //# параметры мембраны
-double c_out = 430;
-double c_in = 50;
-double thickness = 1e-8;
-double phi = 0.0;
-double eps = 1;
+//                Na   K   Cl
+const vd c_out = {430,  20, 556};
+const vd c_in =  { 50, 397,  40};
+const double thickness = 1e-8;
+const double phi = 0.0;
+const double eps = 1;
 //# начальное распределение концентраций
 //start = x -> 0.0
 
 //# параметры ионов
-double u = 4.4e-8;
-double z = 1;
-double D = u * k * T / q / abs(z);
-
+const vd u = {4.44e-8, 6.53e-8, 6.59e-8};
+const vd z = {1, 1, -1};
+vd D(3);
 //# параметры разностной схемы
 size_t nodes = 101;
 double r = .25;  // # <.5 для сходимости схемы
@@ -35,17 +39,23 @@ double tau = 0;
 double dtau = r * dxi * dxi;
 
 
-double field_operator(vd E, size_t i)
+double field_operator(vvd E, size_t j, size_t i)
 {
-    double a = u * phi / 2 / D / dxi * dtau;
-    double b = u * thickness / 2 / D / dxi * dtau;
-    return E[i] * (1 - 2 * r - b * (E[i+1] - E[i-1])) +\
-           E[i + 1] * (r - a) + E[i - 1] * (r + a);
+    double a = D[j] / D[0] / dxi / dxi * dtau;
+    double b = z[j] / abs(z[j]) * u[j] * thickness / 2 / D[0] / dxi * dtau;
+    double sumE = 0;
+    forn(k, 3)
+        sumE += E[k][i];
+    return E[j][i] * (1 - 2 * a) +
+           E[j][i + 1] * (a - b * sumE) + E[j][i - 1] * (a + b * sumE);
 }
 
 int main(int argc, char const *argv[])
 {
-    auto t = []() {return tau * pow(thickness, 2) / D;};
+    forn(i, 3)
+        D[i] = u[i] * k * T / q / abs(z[i]);
+
+    auto t = []() {return tau * pow(thickness, 2) / D[0];};
     vd xi(nodes);
     for (size_t i = 0; i < nodes; i++)
         xi[i] = (double) i / (nodes - 1);
@@ -57,23 +67,29 @@ int main(int argc, char const *argv[])
         abscissa[i] = 10 * xi[i];
 
     // # устанавливаем начальное условие
-    vd E(nodes);
+    vvd E(3);
     auto dE = [](double c) { return F / eps / eps0 * c; };
-    E[0] = E[1] - dxi * thickness * dE(c_out);
-    E[E.size()-1] = E[E.size()-2] + dxi * thickness * dE(c_in);
+    forn(i, 3)
+    {
+        E[i][0] = E[i][1] - dxi * thickness * dE(c_out[i]);
+        E[i][E.size()-1] = E[i][E.size()-2] + dxi * thickness * dE(c_in[i]);
+    }
     tau = 0;
 
     // # теперь считаем:
     // step = 5e-9 * D / thickness ** 2
-    vd new_E = E;
+    vvd new_E = E;
 
     while (tau < 1)
     {
-        for (int i = 1; i < nodes-1; ++i)
-            new_E[i] = field_operator(E, i);
-        new_E[0] = new_E[1] - dxi * thickness * dE(c_out);
-        new_E[new_E.size()-1] =
-            new_E[new_E.size()-2] + dxi * thickness * dE(c_in);
+        forn(j, 3)
+        {
+            formn (i, 1, nodes-1)
+                new_E[j][i] = field_operator(E, j, i);
+            new_E[j][0] = new_E[j][1] - dxi * thickness * dE(c_out[j]);
+            new_E[j][new_E.size()-1] =
+                new_E[j][new_E.size()-2] + dxi * thickness * dE(c_in[j]);
+        }
         E = new_E;
         tau += dtau;
         //printf("%f\n", tau);
@@ -84,10 +100,13 @@ int main(int argc, char const *argv[])
     fprintf(data, "abscissa = [ ");
     for (size_t i = 0; i < abscissa.size(); i++)
         fprintf(data, "%f, ", abscissa[i]);
-    fprintf(data, "]\nE = [ ");
-    for (size_t i = 0; i < E.size(); i++)
-        fprintf(data, "%f, ", E[i]);
-    fprintf(data, "]");
+    forn(j, 3)
+    {
+        fprintf(data, "]\nE%d = [ ", j);
+        forn(i, E.size())
+            fprintf(data, "%f, ", E[j][i]);
+        fprintf(data, "]");
+    }
     fclose(data);
     return 0;
 }
