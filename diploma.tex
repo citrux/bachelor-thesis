@@ -355,12 +355,23 @@
             \left(-D_i\ppder{E_i}{x}+\frac{z_i}{|z_i|}u_iE\pder{E_i}{x}\right).
         \label{eq:j_from_E}
     \end{equation}
-    Эта система подобна саморазряжающемуся конденсатору -- в ней сумма тока
-    смещения и тока проводимости равна нулю\footnote{это нужно доказать строго,
-    причём нужно показать, что эти поля независимы от переменного внешнего поля
-    }, поэтому
+    Теперь воспользуемся уравнением непрерывности:
     \begin{equation}
-        j_i = -j_i^\text{см} = -\eps\eps_0\pder{E_i}{t}.
+        \pder{\rho_i}{t} + \pder{j_i}{x} = 0.
+    \end{equation}
+    Выразим плотность заряда из уравнения Максвелла и подставим в уравнение
+    непрерывности:
+    \begin{equation}
+        \pder{E_i}{x} = \frac{\rho_i}{\eps\eps_0},\quad
+        \eps\eps_0\pder{}{t}\pder{E_i}{x} + \pder{j_i}{x} = 0.
+    \end{equation}
+    Отсюда
+    \begin{equation}
+        \pder{}{x}\left(\eps\eps_0\pder{E_i}{t} + j_i\right) = 0.
+    \end{equation}
+    Интегрируя его и считая при этом, что цепь разомкнута
+    \begin{equation}
+        j_i = -\eps\eps_0\pder{E_i}{t}.
         \label{eq:displacement-current}
     \end{equation}
     Подставляя \eqref{eq:displacement-current} в \eqref{eq:j_from_E}, получаем
@@ -383,11 +394,11 @@
     \end{equation}
     Тогда трансмембранный потенциал равен
     \begin{equation}
-        \phi = \sum_k \int_0^d E_k dx,
+        \phi =  -\int_0^d (E_{ex} + \sum_k E_k) dx,
     \end{equation}
     а распределение концентраций
     \begin{equation}
-        n_k(x) = \frac{\eps\eps_0}{ez_k}\pder{E_k}{x}.
+        c_k(x) = \frac{\eps\eps_0}{Fz_k}\pder{E_k}{x}.
     \end{equation}
 \subsection{Построение разностной схемы}
     Построим явную разностную схему для системы уравнений
