@@ -18,11 +18,11 @@ const double T = 298;
 const double eps0 = 8.85e-12;
 
 //# параметры мембраны
-//                Na   K   Cl
+//                 Na   K   Cl
 const vd c_out = {430,  20, 556};
 const vd c_in =  { 50, 397,  40};
 const double thickness = 1e-8;
-const double phi = 0.0;
+// const double phi = 0.0;
 const double eps = 1;
 //# начальное распределение концентраций
 //start = x -> 0.0
@@ -38,8 +38,19 @@ double dxi = 1.0 / ( nodes - 1 );
 double tau = 0;
 double dtau = r * dxi * dxi;
 
+vvd E(3);
 
-double field_operator(vvd E, size_t type, size_t i)
+double t()
+{
+	return tau * pow(thickness, 2) / D[0];
+}
+
+double dE(double c)
+{
+	return F / eps / eps0 * c;
+}
+
+double field_operator(size_t type, size_t i)
 {
     double a = D[type] / D[0] / dxi / dxi * dtau;
     double b = z[type] / abs(z[type]) * u[type] * thickness / 2 / D[0] / dxi * dtau;
@@ -50,12 +61,22 @@ double field_operator(vvd E, size_t type, size_t i)
            E[type][i + 1] * (a - b * sumE) + E[type][i - 1] * (a + b * sumE);
 }
 
+void init()
+{
+	forn(type, 3)
+    {
+        E[type] = vd(nodes);
+        E[type][0] = E[type][1] - dxi * thickness * z[type] * dE(c_out[type]);
+        E[type][nodes-1] = E[type][nodes-2] + dxi * thickness * z[type] *
+            dE(c_in[type]);
+    }
+    tau = 0;
+}
+
 int main(int argc, char const *argv[])
 {
     forn(i, 3)
         D[i] = u[i] * k * T / q / abs(z[i]);
-
-    auto t = []() {return tau * pow(thickness, 2) / D[0];};
     vd xi(nodes);
     for (size_t i = 0; i < nodes; i++)
         xi[i] = (double) i / (nodes - 1);
@@ -67,16 +88,7 @@ int main(int argc, char const *argv[])
         abscissa[i] = 10 * xi[i];
 
     // # устанавливаем начальное условие
-    vvd E(3);
-    auto dE = [](double c) { return F / eps / eps0 * c; };
-    forn(type, 3)
-    {
-        E[type] = vd(nodes);
-        E[type][0] = E[type][1] - dxi * thickness * z[type] * dE(c_out[type]);
-        E[type][nodes-1] = E[type][nodes-2] + dxi * thickness * z[type] *
-            dE(c_in[type]);
-    }
-    tau = 0;
+    init();
 
     // # теперь считаем:
     // step = 5e-9 * D / thickness ** 2
@@ -86,7 +98,7 @@ int main(int argc, char const *argv[])
         forn(type, 3)
         {
             formn (i, 1, nodes-1)
-                new_E[type][i] = field_operator(E, type, i);
+                new_E[type][i] = field_operator(type, i);
             new_E[type][0] = new_E[type][1] - dxi * thickness * dE(c_out[type]);
             new_E[type][nodes-1] =
                 new_E[type][nodes-2] + dxi * thickness * dE(c_in[type]);
