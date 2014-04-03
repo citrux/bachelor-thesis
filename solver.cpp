@@ -39,15 +39,11 @@ double tau = 0;
 double dtau = r * dxi * dxi;
 
 vvd E(3);
+vvd C(3);
 
 double t()
 {
 	return tau * pow(thickness, 2) / D[0];
-}
-
-double dE(double c)
-{
-	return F / eps / eps0 * c;
 }
 
 double field_operator(size_t type, size_t i)
@@ -61,22 +57,56 @@ double field_operator(size_t type, size_t i)
            E[type][i + 1] * (a - b * sumE) + E[type][i - 1] * (a + b * sumE);
 }
 
+void border_condition()
+{
+    forn(type, 3)
+    {
+        E[type][0] = E[type][1] - dxi * thickness * z[type] * F / eps / eps0 * c_out[type];
+        E[type][nodes-1] = E[type][nodes-2] + dxi * thickness * z[type] * F / eps / eps0 * c_in[type];
+    }
+}
+
+
 void init()
 {
 	forn(type, 3)
     {
+        D[type] = u[type] * k * T / q / abs(z[type]);
         E[type] = vd(nodes);
-        E[type][0] = E[type][1] - dxi * thickness * z[type] * dE(c_out[type]);
-        E[type][nodes-1] = E[type][nodes-2] + dxi * thickness * z[type] *
-            dE(c_in[type]);
+        C[type] = vd(nodes);
     }
+    border_condition();
     tau = 0;
+}
+
+void calculate_field()
+{
+    vvd new_E = E;
+    while (t() < 1e-10)
+    {
+        forn(type, 3)
+            formn (i, 1, nodes-1)
+                new_E[type][i] = field_operator(type, i);
+        E = new_E;
+        border_condition();
+        tau += dtau;
+        //printf("%e s\n", t());
+    }
+}
+
+void calculate_concentrations()
+{
+    forn(type, 3)
+    {
+        C[type][0] = c_out[type];
+        C[type][nodes-1] = c_in[type];
+        formn(i, 1, nodes - 1)
+            C[type][i] = eps * eps0 / z[type] / F * (E[type][i+1] - E[type][i-1]) / 2 / dxi / thickness;
+    }
 }
 
 int main(int argc, char const *argv[])
 {
-    forn(i, 3)
-        D[i] = u[i] * k * T / q / abs(z[i]);
     vd xi(nodes);
     for (size_t i = 0; i < nodes; i++)
         xi[i] = (double) i / (nodes - 1);
@@ -87,41 +117,36 @@ int main(int argc, char const *argv[])
     for (size_t i = 0; i < xi.size(); i++)
         abscissa[i] = 10 * xi[i];
 
-    // # устанавливаем начальное условие
+    // устанавливаем начальное условие
     init();
 
-    // # теперь считаем:
-    // step = 5e-9 * D / thickness ** 2
-    vvd new_E = E;
-    while (t() < 1e-10)
-    {
-        forn(type, 3)
-        {
-            formn (i, 1, nodes-1)
-                new_E[type][i] = field_operator(type, i);
-            new_E[type][0] = new_E[type][1] - dxi * thickness * dE(c_out[type]);
-            new_E[type][nodes-1] =
-                new_E[type][nodes-2] + dxi * thickness * dE(c_in[type]);
-        }
-        E = new_E;
-        tau += dtau;
-        //printf("%e s\n", t());
-    }
+    // теперь считаем:
+    calculate_field();
+    calculate_concentrations();
 
     FILE *data;
     data = fopen("data.py", "w");
     fprintf(data, "abscissa = [ ");
-    for (size_t i = 0; i < abscissa.size(); i++)
+    forn(i, abscissa.size())
         fprintf(data, "%f, ", abscissa[i]);
     fprintf(data, "]\n");
 
-    forn(j, 3)
+    forn(type, 3)
     {
-        fprintf(data, "E%d = [ ", j);
+        fprintf(data, "E%d = [ ", type);
         forn(i, nodes)
-            fprintf(data, "%f, ", E[j][i]);
+            fprintf(data, "%f, ", E[type][i]);
         fprintf(data, "]\n");
     }
+
+    forn(type, 3)
+    {
+        fprintf(data, "C%d = [ ", type);
+        forn(i, nodes)
+            fprintf(data, "%f, ", C[type][i]);
+        fprintf(data, "]\n");
+    }
+
     fclose(data);
     return 0;
 }

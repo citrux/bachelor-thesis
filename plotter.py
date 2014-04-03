@@ -1,33 +1,37 @@
-from data import abscissa, E0, E1, E2
+PRODUCTION = True
+
+from data import *
 from matplotlib import pyplot as plt
+
+if PRODUCTION:
+    plt.rc("text", usetex=True)
+    plt.rc("font", family="serif", size=14)
+    plt.rc("text.latex", unicode=True)
+    plt.rc("text.latex", preamble="\\usepackage[utf8x]{inputenc}\
+                               \\usepackage[T2A]{fontenc}\
+                               \\usepackage[russian]{babel}\
+                               \\usepackage{amsmath}\
+                               \\usepackage{pscyr}")
+
 
 for E, l in [(E0, "Na"), (E1, "K"), (E2, "Cl")]:
     plt.plot(abscissa, E, label=l)
-plt.xlabel("x, nm")
-plt.ylabel("E, GV/m")
+
+#E = [E0[i] + E1[i] + E2[i] for i in range(len(abscissa))]
+#plt.plot(abscissa, E, "k-", label="ions' field")
+
+plt.xlabel(r"$x,\ \text{нм}$")
+plt.ylabel(r"$E,\ 10^9\frac{\text{В}}{\text{м}}$")
 plt.grid(True)
 plt.legend()
-plt.savefig("field.png")
+plt.savefig("plots/stat_field.pdf")
 plt.cla()
 
-F = 96485 * 1e-9
-eps = 1
-eps0 = 8.85e-12
-
-dx = (abscissa[1] - abscissa[0]) * 1e-9
-#print(dx)
-for E, l in [(E0, "Na"), (E1, "K"), (E2, "Cl")]:
-    C = [0] * len(abscissa)
-    C[0] = eps * eps0 / F * (E[1] - E[0]) / dx
-    C[-1] = eps * eps0 / F * (E[-1] - E[-2]) / dx
-    for i in range(1, len(abscissa) - 1):
-        C[i] = eps * eps0 / F * (E[i+1] - E[i-1]) / 2 / dx
+for C, l in [(C0, "Na"), (C1, "K"), (C2, "Cl")]:
     plt.plot(abscissa, C, label=l)
-plt.xlabel("x, nm")
-plt.ylabel("c, mol/m^3")
+plt.xlabel(r"$x,\ \text{нм}$")
+plt.ylabel(r"$C,\ \frac{\text{моль}}{\text{м}^3}$")
 plt.grid(True)
 plt.legend()
-plt.savefig("conc.png")
-
-phi = -(sum(E) - .5 * (E[0] + E[-1])) * dx * 1e9
-print(phi)
+plt.savefig("plots/stat_conc.pdf")
+plt.cla()
