@@ -12,7 +12,7 @@ typedef vector<vd> vvd;
 
 //# внешние параметры и постоянные
 const double q = 1.6e-19;
-const double F = 96485;
+const double F = 96485 * 1e-9;
 const double k = 1.38e-23;
 const double T = 298;
 const double eps0 = 8.85e-12;
@@ -33,21 +33,21 @@ const vd z = {1, 1, -1};
 vd D(3);
 //# параметры разностной схемы
 size_t nodes = 101;
-double r = .25;  // # <.5 для сходимости схемы
+double r = .1;  // # <.5 для сходимости схемы
 double dxi = 1.0 / ( nodes - 1 );
 double tau = 0;
 double dtau = r * dxi * dxi;
 
 
-double field_operator(vvd E, size_t j, size_t i)
+double field_operator(vvd E, size_t type, size_t i)
 {
-    double a = D[j] / D[0] / dxi / dxi * dtau;
-    double b = z[j] / abs(z[j]) * u[j] * thickness / 2 / D[0] / dxi * dtau;
+    double a = D[type] / D[0] / dxi / dxi * dtau;
+    double b = z[type] / abs(z[type]) * u[type] * thickness / 2 / D[0] / dxi * dtau;
     double sumE = 0;
     forn(k, 3)
         sumE += E[k][i];
-    return E[j][i] * (1 - 2 * a) +
-           E[j][i + 1] * (a - b * sumE) + E[j][i - 1] * (a + b * sumE);
+    return E[type][i] * (1 - 2 * a) +
+           E[type][i + 1] * (a - b * sumE) + E[type][i - 1] * (a + b * sumE);
 }
 
 int main(int argc, char const *argv[])
@@ -69,30 +69,31 @@ int main(int argc, char const *argv[])
     // # устанавливаем начальное условие
     vvd E(3);
     auto dE = [](double c) { return F / eps / eps0 * c; };
-    forn(i, 3)
+    forn(type, 3)
     {
-        E[i][0] = E[i][1] - dxi * thickness * dE(c_out[i]);
-        E[i][E.size()-1] = E[i][E.size()-2] + dxi * thickness * dE(c_in[i]);
+        E[type] = vd(nodes);
+        E[type][0] = E[type][1] - dxi * thickness * z[type] * dE(c_out[type]);
+        E[type][nodes-1] = E[type][nodes-2] + dxi * thickness * z[type] *
+            dE(c_in[type]);
     }
     tau = 0;
 
     // # теперь считаем:
     // step = 5e-9 * D / thickness ** 2
     vvd new_E = E;
-
-    while (tau < 1)
+    while (t() < 1e-10)
     {
-        forn(j, 3)
+        forn(type, 3)
         {
             formn (i, 1, nodes-1)
-                new_E[j][i] = field_operator(E, j, i);
-            new_E[j][0] = new_E[j][1] - dxi * thickness * dE(c_out[j]);
-            new_E[j][new_E.size()-1] =
-                new_E[j][new_E.size()-2] + dxi * thickness * dE(c_in[j]);
+                new_E[type][i] = field_operator(E, type, i);
+            new_E[type][0] = new_E[type][1] - dxi * thickness * dE(c_out[type]);
+            new_E[type][nodes-1] =
+                new_E[type][nodes-2] + dxi * thickness * dE(c_in[type]);
         }
         E = new_E;
         tau += dtau;
-        //printf("%f\n", tau);
+        //printf("%e s\n", t());
     }
 
     FILE *data;
@@ -100,12 +101,14 @@ int main(int argc, char const *argv[])
     fprintf(data, "abscissa = [ ");
     for (size_t i = 0; i < abscissa.size(); i++)
         fprintf(data, "%f, ", abscissa[i]);
+    fprintf(data, "]\n");
+
     forn(j, 3)
     {
-        fprintf(data, "]\nE%d = [ ", j);
-        forn(i, E.size())
+        fprintf(data, "E%d = [ ", j);
+        forn(i, nodes)
             fprintf(data, "%f, ", E[j][i]);
-        fprintf(data, "]");
+        fprintf(data, "]\n");
     }
     fclose(data);
     return 0;
