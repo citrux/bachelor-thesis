@@ -3,6 +3,7 @@
 \usepackage[russian]{babel}
 \usepackage{graphicx}
 \usepackage[derivative,vectors]{hedmaths}
+\usepackage[unicode,colorlinks]{hyperref}
 \begin{document}
 \tableofcontents
 \section{Уравнение Нернста-Планка}
@@ -40,11 +41,11 @@
     \end{align*}
     Если к этой системе поставить \( 2n+2 \) граничных условий, то задача будет
     полностью определена.
-    
+
     Однако, в точной формулировке уравнение Нернста-Планка приводит к трудно
     обозримым результатам, поэтому в большинсте случаев пользуются
     приближениями, основанными на некоторых предположениях.
-    
+
     \subsection{Приближение Планка}
     В планковском приближении мембрана считается всюду электронейтральной.
     Система уравнений при этом принимает вид
@@ -401,7 +402,8 @@
     \begin{equation}
         \pder{}{x}\left(\eps\eps_0\pder{E_i}{t} + j_i\right) = 0.
     \end{equation}
-    Интегрируя его и считая при этом, что цепь разомкнута
+    Интегрируя его и считая при этом, что цепь разомкнута\footnote{здесь
+    логический пробел -- как я обнулил константу интегрирования?}
     \begin{equation}
         j_i = -\eps\eps_0\pder{E_i}{t}.
         \label{eq:displacement-current}
@@ -486,4 +488,38 @@
         & +
             \left[A_l + B_l\sum_k E_k(\xi_i,\tau_j)\right]E_l(\xi_{i-1},\tau_j).
     \end{align*}
+
+\subsection{Решение}
+Численное решение производилось при следующих условиях: внешнее поле считалось
+равным нулю, рассматривались токи трёх сортов ионов.
+\begin{table}[h]
+    \center
+    \begin{tabular}{|c|c|c|c|}\hline
+        & \( \mathrm{Na}^+ \) & \( \mathrm{K}^+ \) & \( \mathrm{Cl}^- \) \\
+        \hline
+        Подвижность, \( \frac{\text{м}^2}{\text{с}\cdot\text{В}} \)
+        & \( 4,\!44\cdot10^{-8} \) & \( 6,\!53\cdot10^{-8} \)
+        & \( 6,\!59\cdot10^{-8} \) \\ \hline
+        \( C_{in},\ \frac{\text{моль}}{\text{м}^3} \)
+        & \( 50 \) & \( 397 \) & \( 40 \) \\ \hline
+        \( C_{out},\ \frac{\text{моль}}{\text{м}^3} \)
+        & \( 430 \) & \( 20 \) & \( 556 \) \\ \hline
+    \end{tabular}
+\end{table}
+Начальное условие пологалось нулевым. Через \( 0,\!2 \) мкс
+распределение концентраций ионов стало линейным, а величина поля
+приобрела катастрофические значения\footnote{очевидно, я где-то допустил
+ошибку\ldots}:
+\begin{figure}[h]
+\begin{center}
+    \includegraphics[width=\textwidth]{plots/stat_conc}
+\end{center}
+\caption{Распределение концентраций ионов в мемебране через \( 0,\!2 \) мкс}
+\end{figure}
+\begin{figure}[h]
+\begin{center}
+    \includegraphics[width=\textwidth]{plots/stat_field}
+\end{center}
+\caption{Распределение полей ионов в мемебране через \( 0,\!2 \) мкс}
+\end{figure}
 \end{document}
