@@ -1,12 +1,130 @@
-\documentclass[chapters]{hedwork}
-\usepackage[utf8]{inputenc}
-\usepackage[russian]{babel}
-\usepackage{graphicx}
-\usepackage[derivative,vectors]{hedmaths}
-\usepackage[unicode,colorlinks]{hyperref}
-\usepackage{mathrsfs}
+\documentclass[a4paper,14pt]{extreport} %размер бумаги устанавливаем А4, шрифт 12пунктов
+\usepackage[T2A]{fontenc}
+\usepackage[utf8x]{inputenc}%включаем свою кодировку: koi8-r или utf8 в UNIX, cp1251 в Windows
+\usepackage[english,russian]{babel}%используем русский и английский языки с переносами
+\usepackage{indentfirst}
+\usepackage[derivative, vectors]{hedmaths}
+\usepackage{cite,enumerate,float} %подключаем нужные пакеты расширений
+\usepackage{graphicx} %хотим вставлять в диплом рисунки?
+\graphicspath{{images/},{plots/}}%путь к рисункам
+
+\usepackage{multicol, multirow, array}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1\textwidth}}
+\renewcommand{\arraystretch}{1.2}
+\usepackage{times}
+\renewcommand{\rmdefault}{ftm}
+
+\usepackage{geometry} % Меняем поля страницы
+\geometry{left=2cm}% левое поле
+\geometry{right=1.5cm}% правое поле
+\geometry{top=1cm}% верхнее поле
+\geometry{bottom=2cm}% нижнее поле
+
+\usepackage{tocloft}
+\renewcommand{\cfttoctitlefont}{\normalfont}
+\makeatletter
+\renewcommand*\l@chapter[2]{%
+  \ifnum \c@tocdepth >\z@
+    \addpenalty\@secpenalty
+    \addvspace{1.0em \@plus\p@}%
+    \setlength\@tempdima{1.5em}%
+    \begingroup
+      \parindent \z@ \rightskip \@pnumwidth
+      \parfillskip -\@pnumwidth
+      \leavevmode
+      \advance\leftskip\@tempdima
+      \hskip -\leftskip
+      #1\nobreak\cftdotfill{\cftdotsep} \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+    \endgroup
+  \fi}
+\renewcommand*\l@section[2]{%
+  \ifnum \c@tocdepth >\@ne
+    \addpenalty\@secpenalty
+    \addvspace{1.0em \@plus\p@}%
+    \setlength\@tempdima{1.5em}%
+    \begingroup
+      \parindent \z@ \rightskip \@pnumwidth
+      \parfillskip -\@pnumwidth
+      \leavevmode
+      \advance\leftskip\@tempdima
+      \hskip -\leftskip
+      #1\nobreak\cftdotfill{\cftdotsep} \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+    \endgroup
+  \fi}
+\renewcommand*\l@subsection[2]{%
+\ifnum \c@tocdepth >\tw@
+  \addpenalty\@secpenalty
+  \addvspace{1.0em \@plus\p@}%
+  \setlength\@tempdima{1.5em}%
+  \begingroup
+    \parindent \z@ \rightskip \@pnumwidth
+    \parfillskip -\@pnumwidth
+    \leavevmode
+    \advance\leftskip\@tempdima
+    \hskip -\leftskip
+    #1\nobreak\cftdotfill{\cftdotsep} \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+  \endgroup
+\fi}
+\makeatother
+\usepackage{setspace}
+
+\usepackage{titlesec}
+\usepackage[square, numbers, sort&compress]{natbib}
+\makeatletter
+% \bibliographystyle{srt}
+\renewcommand{\@biblabel}[1]{#1}
+\makeatother
+\titleformat{\chapter}
+    {\normalsize\MakeUppercase}
+    {\thechapter}
+    {1em}{}
+
+\titleformat{\section}
+    {\normalsize}
+    {\thesection}
+    {1em}{}
+
+\titleformat{\subsection}
+    {\normalsize}
+    {\thesubsection}
+    {1em}{}
+\renewcommand{\bibsection}{%
+    \titleformat{\chapter} {\normalfont\filcenter}{}{}{}
+    \titlespacing*{\chapter}{\parindent}{*4}{*0}
+    \chapter*{ \bibname \markboth{\bibname}{\bibname}}}
+% Настройка вертикальных и горизонтальных отступов
+\titlespacing*{\chapter}{\parindent}{*5}{18pt}
+\titlespacing*{\section}{\parindent}{*5}{18pt}
+\titlespacing*{\subsection}{\parindent}{*4}{*1}
+
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1\textwidth}}
+\renewcommand{\arraystretch}{1.2}
+
+\renewcommand{\small}{\fontsize{12pt}{14.4pt}\selectfont}
+\usepackage{caption}
+\DeclareCaptionLabelFormat{figure}{Рисунок #2}
+\DeclareCaptionLabelFormat{table}{Таблица #2}
+\DeclareCaptionLabelSeparator{sep}{~---~}
+\captionsetup{labelsep=sep,justification=centering,font=small}
+\captionsetup[figure]{labelformat=figure}
+\captionsetup[table]{labelformat=table}
+
+\renewcommand{\theenumi}{\arabic{enumi}}
+\renewcommand{\labelenumi}{\arabic{enumi})}
+\renewcommand{\theenumii}{.\arabic{enumii}}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii})}
+\renewcommand{\theenumiii}{.\arabic{enumiii}}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii})}
 \begin{document}
-\tableofcontents
-\input{01-stationary_processes}
-\input{02-transients}
+\onehalfspacing
+\setlength{\parindent}{1.25cm}
+%\input{01-title}
+%\input{02-referat}
+\newpage
+\renewcommand{\contentsname}{\begin{center}Содержание\end{center}}
+\tableofcontents % это оглавление, которое генерируется автоматически
+\newpage
+\input{05-stationary_processes}
+\input{06-transients}
+\input{07-microwaves}
 \end{document}

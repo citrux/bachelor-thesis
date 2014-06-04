@@ -2,13 +2,11 @@
     Уравнение Нернста-Планка
     \begin{equation}
         j = -\frac{z}{|z|}ukT\pder{n}{x} - |z|nue\pder{\phi}{x}.
-        \label{eq:nernst-plank}
+        \label{eq:nernst-plank-2}
     \end{equation}
-    не содержит явно времени и описывает установившийся ток. Его плотность,
-    по всей толщине мембраны одинакова. Так как меня интересует переходный
-    процесс, приводящий к формированию равновесных распределений концентрации
-    и потенциала в мембране, то мне необходимо ввести в это уравнение время.
-    Для этого можно воспользоваться уравнением непрерывности:
+    не содержит явно времени и описывает установившийся ток, плотность которого
+    одинакова по всей толщине мембраны. Получим с его помощью уравнение для
+    переходного процесса. Для этого воспользуемся уравнением непрерывности:
     \begin{equation}
         \pder{\rho}{t} + \divergence\vec{j} = 0.
     \end{equation}
@@ -17,7 +15,7 @@
         \pder{n}{t} = \frac{ukT}{e|z|}\ppder{n}{x} +
             \frac{z}{|z|}u\pder{\phi}{x}\pder{n}{x} +
             \frac{z}{|z|}u\ppder{\phi}{x}n.
-        \label{eq:nernst-plank_with_time}
+        \label{eq:nernst-plank-2_with_time}
     \end{equation}
     Попробуем теперь узнать характерное время, необходимое на установление
     равновесных распределений концентраций. Для этого будем считать, что
@@ -30,14 +28,14 @@
             \[
                 \pder{\phi}{x} = -E = \const
             \]
-            и уравнение (\ref{eq:nernst-plank_with_time}) упрощается
+            и уравнение (\ref{eq:nernst-plank-2_with_time}) упрощается
             \begin{equation}
                 \pder{n}{t} = \frac{ukT}{e|z|}\ppder{n}{x} -
                     \frac{z}{|z|}uE\pder{n}{x}.
             \end{equation}
         \item \textbf{линейное распределение концентрации}\\
             в этом случае сначала необходимо из уравнения
-            (\ref{eq:nernst-plank}) получить равновесное распределение
+            (\ref{eq:nernst-plank-2}) получить равновесное распределение
             потенциала:
             \[
                 n = n_{out} - \frac{n_{out} - n_{in}}{d} x,\ j = -\pder{z}{|z|}ukTn_1 -
@@ -48,7 +46,7 @@
                 \frac{n_{in} - n_{out}}{d}
                 \frac{1}{n_{out} - \frac{n_{out} - n_{in}}{d} x}.
             \]
-            Подставляя в уравнение (\ref{eq:nernst-plank_with_time}), получаем
+            Подставляя в уравнение (\ref{eq:nernst-plank-2_with_time}), получаем
             \begin{gather}
                 \pder{n}{t} = \frac{ukT}{e|z|}\ppder{n}{x} -
                 \frac{z}{|z|}u\frac{\phi_0}{\ln\frac{n_{out}}{n_{in}}}
@@ -106,10 +104,9 @@
     Очевидно, что максимальное значение величина поля принимает вблизи краёв
     мембраны:
     \begin{equation}
-        \boxed{
         E_i^{max} = \frac{ezd}{2\eps\eps_0\alpha(e^\alpha - 1)}\left\{
             n_{out}[(\alpha - 1)e^\alpha + 1] - n_{in}[\alpha + 1 - e^\alpha]
-        \right\} \ll E.}
+        \right\} \ll E.
     \end{equation}
 \subsection{Решение уравнения}
     Для удобства в уравнении
@@ -125,7 +122,7 @@
     \[
         \pder{n}{t} = D\ppder{n}{x} - v\pder{n}{x}.
     \]
-    Это уравнение конвективной диффузии. Поставим задачу Неймана для
+    Это уравнение конвективной диффузии. Поставим краевую задачу для
     этого дифференциального уравнения в частных производных -- будем
     считать концентрации на краях мембраны постоянными, так как они
     определяются концентрациями в омывающих растворах, а начальное
@@ -146,28 +143,9 @@
         & n(1, \tau) = n_{in},\ \tau>0 \\
         & n(\xi, 0) = 0,\ \xi\in(0,1).
     \end{align*}
-    Теперь построим разностную схему для решения этого уравнения.
-    Воспользуемся явной схемой
-    \[
-        \frac{n(\xi_i,\tau_{j+1}) - n(\xi_i, \tau_j)}{\Delta\tau} =
-        \frac{n(\xi_{i+1},\tau_j) - 2n(\xi_i, \tau_j) +
-        n(\xi_{i-1},\tau_j)}{\Delta\xi^2} -
-        w\frac{n(\xi_{i+1},\tau_j) - n(\xi_{i-1}, \tau_j)}{2\Delta\xi}.
-    \]
-    Если теперь явно выразить значение на следующем временном шаге через
-    значение на предыдущем, получим
-    \begin{gather*}
-        n(\xi_i,\tau_{j+1}) =
-        [1-2r]n(\xi_i, \tau_j) +
-        r\left(
-            [1 - s]n(\xi_{i+1},\tau_j) + [1 + s]n(\xi_{i-1},\tau_j)
-        \right),\\
-        r = \frac{\Delta\tau}{\Delta\xi^2}, s = \frac{w\Delta\xi}{2}.
-    \end{gather*}
-
-    Для иона натрия в мембране аксона кальмара результат представлен на
-    рисунке~\ref{fig:1}.
-    \begin{figure}[h]
+    Эта систему можно решить численно. Результаты численного расчёта для иона
+    натрия в мембране аксона кальмара представлены на рисунке~\ref{fig:1}.
+    \begin{figure}[H]
     \begin{center}
         \includegraphics[width=.7\textwidth]{plots/linear_field}
     \end{center}
@@ -210,8 +188,7 @@
         \right].
     \end{equation}
     \begin{equation}
-        \boxed{
-        E_i^{max} = \frac{ezd}{\eps\eps_0}\frac{n_{in}+n_{out}}{4} \ll E_{min}.}
+        E_i^{max} = \frac{ezd}{\eps\eps_0}\frac{n_{in}+n_{out}}{4} \ll E_{min}.
     \end{equation}
 
 \subsection{Решение уравнения}
@@ -246,7 +223,7 @@
         \tau = \frac{D}{d^2}t,\ \xi = \frac{x}{d},\ w = \frac{vd}{D},
         \ g(\xi) = \frac{1}{\xi - \frac{n_{out}}{n_{out} - n_{in}}}.
     \end{equation}
-    Опять поставим для этого уравнения задачу Неймана:
+    Опять поставим для этого уравнения краевую задачу:
     \begin{align*}
         & \pder{n}{\tau} = \ppder{n}{\xi} - wg(\xi)\pder{n}{\xi} + wg^2(\xi)n,
             \ \xi\in(0,1) \\
@@ -254,21 +231,9 @@
         & n(1, \tau) = n_{in},\ \tau>0 \\
         & n(\xi, 0) = 0,\ \xi\in(0,1).
     \end{align*}
-    Разностная схема имеет вид
-    \begin{gather*}
-        n(\xi_i,\tau_{j+1}) =
-        [1-2r+qg^2(\xi)]n(\xi_i, \tau_j) +\\
-        + r\left(
-            [1 - sg(\xi_i)]n(\xi_{i+1},\tau_j) +
-            [1 + sg(\xi_i)]n(\xi_{i-1},\tau_j)
-        \right),\\
-        r = \frac{\Delta\tau}{\Delta\xi^2}, s = \frac{w\Delta\xi}{2},
-        q = w\Delta\tau.
-    \end{gather*}
-
-    Решим её для иона натрия в мембране аксона кальмара. Результат представлен
-    на рисунке~\ref{fig:2}.
-    \begin{figure}[h]
+    Результат численного решения для иона натрия в мембране аксона кальмара
+    представлен на рисунке~\ref{fig:2}.
+    \begin{figure}[H]
     \begin{center}
         \includegraphics[width=.7\textwidth]{plots/linear_conc}
     \end{center}
@@ -277,7 +242,11 @@
     установившийся линейный профиль.}
     \label{fig:2}
     \end{figure}
-\newpage
+
+    Таким образом, за время порядка \(10^{-8}\) -- \(10^{-7}\) с в обоих
+    рассмотренных приближениях устанавливается равновесное распределение
+    концентраций.
+
 \section{Учёт поля ионов}
     Запишем снова уравнение Нернста-Планка:
     \begin{equation}
@@ -288,150 +257,56 @@
     \begin{equation}
         E = E_{ex} + \sum_{i} E_i.
     \end{equation}
+    Рассмотрим случай пассивного транспорта ионов одного сорта. В этом случае
+    \begin{equation}
+        E = E_{ex} + E_{in}.
+    \end{equation}
     Так как задача плоская, то внешнее поле может быть только однородным.
     Электрическое поле ионов связано с их концентрацией уравнением Максвелла:
     \begin{equation}
-        \pder{E_i}{x} = \frac{n_iez_i}{\eps\eps_0},\quad
-        n_i = \frac{\eps\eps_0}{ez_i}\pder{E_i}{x}.
+        \pder{E_{in}}{x} = \frac{nez}{\eps\eps_0},\quad
+        n = \frac{\eps\eps_0}{ez}\pder{E_{in}}{x}.
     \end{equation}
-    Тогда парциальный ток ионов сорта \( i \) определяется выражением
+    Тогда плотность ионного тока определяется выражением
     \begin{equation}
-        j_i = \eps\eps_0
-            \left(-D_i\ppder{E_i}{x}+\frac{z_i}{|z_i|}u_iE\pder{E_i}{x}\right).
+        j = \eps\eps_0
+            \left(-D_i\ppder{E_{in}}{x}+\frac{z_i}{|z_i|}u_iE\pder{E_{in}}{x}\right).
         \label{eq:j_from_E}
     \end{equation}
     Теперь воспользуемся уравнением непрерывности:
     \begin{equation}
-        \pder{\rho_i}{t} + \pder{j_i}{x} = 0.
+        \pder{\rho}{t} + \pder{j}{x} = 0.
     \end{equation}
     Выразим плотность заряда из уравнения Максвелла и подставим в уравнение
     непрерывности:
     \begin{equation}
-        \pder{E_i}{x} = \frac{\rho_i}{\eps\eps_0},\quad
-        \eps\eps_0\pder{}{t}\pder{E_i}{x} + \pder{j_i}{x} = 0.
+        \pder{E_{in}}{x} = \frac{\rho}{\eps\eps_0},\quad
+        \eps\eps_0\pder{}{t}\pder{E_{in}}{x} + \pder{j}{x} = 0.
     \end{equation}
     Отсюда
     \begin{equation}
-        \pder{}{x}\left(\eps\eps_0\pder{E_i}{t} + j_i\right) = 0.
+        \pder{}{x}\left(\eps\eps_0\pder{E_{in}}{t} + j\right) = 0,
     \end{equation}
-    Интегрируя его и считая при этом, что цепь разомкнута\footnote{здесь
-    логический пробел -- как я обнулил константу интегрирования?}
     \begin{equation}
-        j_i = -\eps\eps_0\pder{E_i}{t}.
+        \pder{j}{x} = -\eps\eps_0\pcder{E_{in}}{x}{t}.
         \label{eq:displacement-current}
     \end{equation}
     Подставляя \eqref{eq:displacement-current} в \eqref{eq:j_from_E}, получаем
-    систему уравнений конвективной диффузии для электрического поля:
+    нелинейное дифференциальное уравнение третьего порядка для поля:
     \begin{equation}
-        \pder{E_i}{t} = D_i\ppder{E_i}{x} -
-        \frac{z_i}{|z_i|}u_i\left(E_{ex} + \sum_{k} E_k\right)\pder{E_i}{x}.
+        \pcder{E}{x}{t} = D\frac{\partial^3{E}}{\partial x^3} -
+        \frac{z}{\abs{z}}u\pder{}{x}\left(E\pder{E}{x}\right).
+        \label{eq:epic-equation}
     \end{equation}
     Граничное условие для неё можно поставить в виде
     \begin{equation}
-        \left.\pder{E_i}{x}\right|_{x=0} = \frac{ez_i}{\eps\eps_0}n_i(0),\quad
-        \left.\pder{E_i}{x}\right|_{x=d} = \frac{ez_i}{\eps\eps_0}n_i(d).
+        \left.\pder{E}{x}\right|_{x=0} = \frac{ez}{\eps\eps_0}n(0),\quad
+        \left.\pder{E}{x}\right|_{x=d} = \frac{ez}{\eps\eps_0}n(d).
     \end{equation}
 
-    Теперь положим, что внутриклеточная и внеклеточная среды электронейтральны и
-    нет внешнего переменного поля. Тогда уравнение принимает более простой вид:
+    Решив это уравнение можно получить и распределение концентраций
     \begin{equation}
-        \pder{E_i}{t} = D_i\ppder{E_i}{x} -
-        \frac{z_i}{|z_i|}u_i \sum_{k} E_k \pder{E_i}{x}.
+        c_k(x) = \frac{\eps\eps_0}{Fz_k}\pder{E_k}{x},
     \end{equation}
-    Тогда трансмембранный потенциал равен
-    \begin{equation}
-        \phi =  -\int_0^d (E_{ex} + \sum_k E_k) dx,
-    \end{equation}
-    а распределение концентраций
-    \begin{equation}
-        c_k(x) = \frac{\eps\eps_0}{Fz_k}\pder{E_k}{x}.
-    \end{equation}
-\subsection{Построение разностной схемы}
-    Построим явную разностную схему для системы уравнений
-    \begin{equation}
-        \pder{E_l}{t} = D_l\ppder{E_l}{x} -
-        \frac{z_l}{|z_l|}u_l \sum_{k} E_k \pder{E_l}{x}.
-    \end{equation}
-    Сначала введем безразмерную координату и время:
-    \begin{equation}
-        \xi = \frac{x}{d},\quad \tau = t\frac{D_1}{d^2}
-    \end{equation}
-    \begin{equation}
-        \pder{E_l}{\tau} = \frac{D_l}{D_1}\ppder{E_l}{\xi} -
-        \frac{z_l}{|z_l|}\frac{u_ld}{D_1} \sum_{k} E_k \pder{E_l}{\xi}.
-    \end{equation}
-    Обозначая
-    \begin{equation}
-        a_l = \frac{D_l}{D_1},\quad b_l = \frac{z_l}{|z_l|}\frac{u_ld}{D_1}
-    \end{equation}
-    получаем систему
-    \begin{equation}
-        \pder{E_l}{\tau} = a_l\ppder{E_l}{\xi} - b_l\sum_k E_k \pder{E_l}{\xi}.
-    \end{equation}
-    Заменняя дифференциальный операторы разностными, получаем
-    \begin{align*}
-        \frac{E_l(\xi_i, \tau_{j+1}) - E_l(\xi_i, \tau_j)}{\Delta\tau_j} & =
-        a_l\frac{E_l(\xi_{i+1}, \tau_j) - 2E_l(\xi_i, \tau_j) +
-        E_l(\xi_{i-1}, \tau_j)}{\Delta\xi_i^2} -\\
-        & -b_l\sum_k E_k(\xi_i, \tau_j)
-        \frac{E_l(\xi_{i+1}, \tau_j) - E_l(\xi_{i-1}, \tau_j)}{2\Delta\xi_i}.
-    \end{align*}
-    Перегруппируя слагаемые, получаем
-    \begin{align*}
-        E_l(\xi_i, \tau_{j+1}) - E_l(\xi_i, \tau_j) & =
-        \frac{a_l\Delta\tau_j}{\Delta\xi_i^2}
-        [E_l(\xi_{i+1}, \tau_j) - 2E_l(\xi_i, \tau_j) + E_l(\xi_{i-1}, \tau_j)]
-        -\\
-        & - \frac{b_l\Delta\tau_j}{2\Delta\xi_i}
-        [E_l(\xi_{i+1}, \tau_j) - E_l(\xi_{i-1}, \tau_j)]
-        \sum_k E_k(\xi_i, \tau_j).
-    \end{align*}
-    Если сетка равномерна, то можно ввести обозначения
-    \[
-        A_l = \frac{a_l \Delta\tau}{\Delta\xi^2},\quad
-        B_l = \frac{b_l\Delta\tau}{2\Delta\xi}.
-    \]
-    Тогда уравнение можно преобразовать к виду
-    \begin{align*}
-        E_l(\xi_i, \tau_{j+1}) & = (1-2A_l)E_l(\xi_i, \tau_j) +\\
-        & +
-            \left[A_l - B_l\sum_k E_k(\xi_i,\tau_j)\right]E_l(\xi_{i+1},\tau_j)
-          + \\
-        & +
-            \left[A_l + B_l\sum_k E_k(\xi_i,\tau_j)\right]E_l(\xi_{i-1},\tau_j).
-    \end{align*}
-
-\subsection{Решение}
-Численное решение производилось при следующих условиях: внешнее поле считалось
-равным нулю, рассматривались токи трёх сортов ионов.
-\begin{table}[h]
-    \center
-    \begin{tabular}{|c|c|c|c|}\hline
-        & \( \mathrm{Na}^+ \) & \( \mathrm{K}^+ \) & \( \mathrm{Cl}^- \) \\
-        \hline
-        Подвижность, \( \frac{\text{м}^2}{\text{с}\cdot\text{В}} \)
-        & \( 4,\!44\cdot10^{-8} \) & \( 6,\!53\cdot10^{-8} \)
-        & \( 6,\!59\cdot10^{-8} \) \\ \hline
-        \( C_{in},\ \frac{\text{моль}}{\text{м}^3} \)
-        & \( 50 \) & \( 397 \) & \( 40 \) \\ \hline
-        \( C_{out},\ \frac{\text{моль}}{\text{м}^3} \)
-        & \( 430 \) & \( 20 \) & \( 556 \) \\ \hline
-    \end{tabular}
-\end{table}
-Начальное условие пологалось нулевым. Через \( 0,\!2 \) мкс
-распределение концентраций ионов стало линейным, а величина поля
-приобрела катастрофические значения\footnote{очевидно, я где-то допустил
-ошибку\ldots}:
-\begin{figure}[h]
-\begin{center}
-    \includegraphics[width=\textwidth]{plots/stat_conc}
-\end{center}
-\caption{Распределение концентраций ионов в мемебране через \( 0,\!2 \) мкс}
-\end{figure}
-\begin{figure}[h]
-\begin{center}
-    \includegraphics[width=\textwidth]{plots/stat_field}
-\end{center}
-\caption{Распределение полей ионов в мемебране через \( 0,\!2 \) мкс}
-\end{figure}
-
+    и плотность тока ионов, подставив полученные зависимости в уравнение
+    Нернста--Планка~\eqref{eq:nernst-plank-2}.
