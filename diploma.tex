@@ -1,11 +1,11 @@
-\documentclass[a4paper,14pt]{extreport} %размер бумаги устанавливаем А4, шрифт 12пунктов
+\documentclass[a4paper,14pt]{extreport}
 \usepackage[T2A]{fontenc}
 \usepackage[utf8x]{inputenc}%включаем свою кодировку: koi8-r или utf8 в UNIX, cp1251 в Windows
 \usepackage[english,russian]{babel}%используем русский и английский языки с переносами
 \usepackage{indentfirst}
 \usepackage[derivative, vectors]{hedmaths}
-\usepackage{cite,enumerate,float} %подключаем нужные пакеты расширений
-\usepackage{graphicx} %хотим вставлять в диплом рисунки?
+\usepackage{cite,enumerate,float}
+\usepackage{graphicx}
 \graphicspath{{images/},{plots/}}%путь к рисункам
 
 \usepackage{multicol, multirow, array}
@@ -14,7 +14,7 @@
 \usepackage{times}
 \renewcommand{\rmdefault}{ftm}
 
-\usepackage{geometry} % Меняем поля страницы
+\usepackage{geometry}
 \geometry{left=2cm}% левое поле
 \geometry{right=1.5cm}% правое поле
 \geometry{top=1cm}% верхнее поле
@@ -118,13 +118,23 @@
 \begin{document}
 \onehalfspacing
 \setlength{\parindent}{1.25cm}
-%\input{01-title}
-%\input{02-referat}
+\input{01-title}
+\input{02-referat}
 \newpage
-\renewcommand{\contentsname}{\begin{center}Содержание\end{center}}
-\tableofcontents % это оглавление, которое генерируется автоматически
+\renewcommand{\contentsname}{\begin{center}СОДЕРЖАНИЕ\end{center}}
+\tableofcontents
+\newpage
+\input{03-abbreviations}
+\newpage
+\input{04-intro}
 \newpage
 \input{05-stationary_processes}
+\newpage
 \input{06-transients}
+\newpage
 \input{07-microwaves}
+\newpage
+\input{08-conclusion}
+\newpage
+\input{09-lit}
 \end{document}
