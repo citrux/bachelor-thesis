@@ -3,8 +3,8 @@
 \usepackage[utf8x]{inputenc}%включаем свою кодировку: koi8-r или utf8 в UNIX, cp1251 в Windows
 \usepackage[english,russian]{babel}%используем русский и английский языки с переносами
 \usepackage{indentfirst}
-\usepackage[derivative, vectors]{hedmaths}
 \usepackage{cite,enumerate,float}
+\usepackage{amsmath, amssymb} 
 \usepackage{graphicx}
 \graphicspath{{images/},{plots/}}%путь к рисункам
 
@@ -115,6 +115,34 @@
 \renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii})}
 \renewcommand{\theenumiii}{.\arabic{enumiii}}
 \renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii})}
+
+\newcommand{\pder}[2] {\frac{\partial #1}{\partial #2}}
+      % частная производная от #1 по #2
+\newcommand{\ppder}[2]{\frac{\partial^2 #1}{\partial {#2}^2}}
+  % вторая частная производная от #1 по #2
+\newcommand{\pcder}[3]{\frac{\partial^2 #1}{\partial #2 \partial #3}}
+  % вторая частная производная от #1 по #2 и #3
+\newcommand{\der}[2]  {\frac{d #1}{d #2}}
+  % производная от #1 по #2
+\newcommand{\dder}[2] {\frac{d^2 #1}{d {#2}^2}}
+  % вторая производная от #1 по #2
+
+% --- обозначения и команды ---
+\newcommand{\const}{\mathrm{const}}                     % константа
+\newcommand{\average}[1]{\left\langle #1 \right\rangle} % обозначение среднего
+\newcommand{\abs}[1]{\left| #1 \right|}                 % обозначение модуля
+\newcommand{\ds}{\displaystyle}                         % полный размер строчной формулы
+\newcommand{\D}{\Delta}
+\newcommand{\dotunder}[1]{\d{#1}} % необходима для обозначения строчной дельты
+\renewcommand{\d}{\delta}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+% xxx обозначения и команды xxx
+
+\newcommand{\divergence}{\mathrm{div\,}}  % дивергенция
+\newcommand{\gradient}  {\mathrm{grad\,}} % градиент
+\newcommand{\rotor}     {\mathrm{rot\,}}  % 
+
 \begin{document}
 \onehalfspacing
 \setlength{\parindent}{1.25cm}
