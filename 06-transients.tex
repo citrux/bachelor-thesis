@@ -295,7 +295,7 @@
     нелинейное дифференциальное уравнение третьего порядка для поля:
     \begin{equation}
         \pcder{E}{x}{t} = D\frac{\partial^3{E}}{\partial x^3} -
-        \frac{z}{\abs{z}}u\pder{}{x}\left(E\pder{E}{x}\right).
+        \frac{z}{\abs{z}}\frac{u}{2}\ppder{E^2}{x}.
         \label{eq:epic-equation}
     \end{equation}
     Граничное условие для неё можно поставить в виде
@@ -303,10 +303,22 @@
         \left.\pder{E}{x}\right|_{x=0} = \frac{ez}{\eps\eps_0}n(0),\quad
         \left.\pder{E}{x}\right|_{x=d} = \frac{ez}{\eps\eps_0}n(d).
     \end{equation}
-
+    Интегрируя \eqref{eq:epic-equation}, получаем
+    \begin{equation}
+        \pder{E}{t} = D\ppder{E}{x} -
+        \frac{z}{\abs{z}}\frac{u}{2}\pder{E^2}{x} - C_1(t).
+    \end{equation}
+    В стационарном процессе
+    \[
+        \pder{E}{t} = 0,\quad C_1(t) = C_1,
+    \]
+    поэтому уравнение можно проинтегрировать ещё раз:
+    \begin{equation}
+        D\pder{E}{x} - \frac{z}{\abs{z}}\frac{u}{2}E^2 = C_1 x + C_2.
+    \end{equation}
     Решив это уравнение можно получить и распределение концентраций
     \begin{equation}
-        c_k(x) = \frac{\eps\eps_0}{Fz_k}\pder{E_k}{x},
+        c(x) = \frac{\eps\eps_0}{Fz}\pder{E}{x},
     \end{equation}
     и плотность тока ионов, подставив полученные зависимости в уравнение
     Нернста--Планка~\eqref{eq:nernst-plank-2}.
