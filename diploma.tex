@@ -70,10 +70,34 @@
 
 \usepackage{titlesec}
 \usepackage[square, numbers, sort&compress]{natbib}
+
 \makeatletter
-% \bibliographystyle{srt}
-\renewcommand{\@biblabel}[1]{#1}
+
+\renewcommand{\@biblabel}[1]{#1} 
+
+% bibliography bibitem item indent
+\renewenvironment{thebibliography}[1]
+    {\chapter*{\bibname}%
+    \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
+    \list{\@biblabel{\@arabic\c@enumiv}}%
+        {\settowidth\labelwidth{\@biblabel{#1}}%
+        \leftmargin=0pt
+        \itemindent=1.25cm
+        \@openbib@code
+        \usecounter{enumiv}%
+        \let\p@enumiv\@empty
+        \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+    \sloppy
+    \clubpenalty4000
+    \@clubpenalty \clubpenalty
+    \widowpenalty4000%
+    \sfcode`\.\@m}
+        {\def\@noitemerr
+        {\@latex@warning{Empty `thebibliography' environment}}%
+    \endlist}
+    
 \makeatother
+
 \titleformat{\chapter}
     {\normalsize\MakeUppercase}
     {\thechapter}
