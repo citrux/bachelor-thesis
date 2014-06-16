@@ -8,6 +8,7 @@
 \usepackage{graphicx}
 \graphicspath{{images/},{plots/}}%путь к рисункам
 
+\usepackage{nopageno}
 \usepackage{multicol, multirow, array}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1\textwidth}}
 \renewcommand{\arraystretch}{1.2}
@@ -17,7 +18,7 @@
 \usepackage{geometry}
 \geometry{left=2cm}% левое поле
 \geometry{right=1.5cm}% правое поле
-\geometry{top=1cm}% верхнее поле
+\geometry{top=2cm}% верхнее поле
 \geometry{bottom=2cm}% нижнее поле
 
 \usepackage{tocloft}
@@ -73,57 +74,6 @@
 \usepackage[unicode, colorlinks, linkcolor=black,
 citecolor=black,urlcolor=black]{hyperref}
 
-\makeatletter
-
-\renewcommand{\@biblabel}[1]{#1}
-
-% bibliography bibitem item indent
-\renewenvironment{thebibliography}[1]
-    {\chapter*{\bibname}%
-    \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
-    \list{\@biblabel{\@arabic\c@enumiv}}%
-        {\settowidth\labelwidth{\@biblabel{#1}}%
-        \leftmargin=0pt
-        \itemindent=1.25cm
-        \@openbib@code
-        \usecounter{enumiv}%
-        \let\p@enumiv\@empty
-        \renewcommand\theenumiv{\@arabic\c@enumiv}}%
-    \sloppy
-    \clubpenalty4000
-    \@clubpenalty \clubpenalty
-    \widowpenalty4000%
-    \sfcode`\.\@m}
-        {\def\@noitemerr
-        {\@latex@warning{Empty `thebibliography' environment}}%
-    \endlist}
-
-\makeatother
-
-\titleformat{\chapter}
-    {\normalsize}
-    {\thechapter}
-    {1em}{}
-
-\titleformat{\section}
-    {\normalsize}
-    {\thesection}
-    {1em}{}
-
-\titleformat{\subsection}
-    {\normalsize}
-    {\thesubsection}
-    {1em}{}
-\renewcommand{\bibsection}{%
-    \titleformat{\chapter} {\normalfont\filcenter}{}{}{}
-    \titlespacing*{\chapter}{\parindent}{*4}{*0}
-    \chapter*{ \bibname \markboth{\bibname}{\bibname}}}
-% Настройка вертикальных и горизонтальных отступов
-\titlespacing*{\chapter}{\parindent}{*5}{18pt}
-\titlespacing*{\section}{\parindent}{*5}{18pt}
-\titlespacing*{\subsection}{\parindent}{*4}{*1}
-
-\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1\textwidth}}
 \renewcommand{\arraystretch}{1.2}
 
 \renewcommand{\small}{\fontsize{12pt}{14.4pt}\selectfont}
@@ -168,6 +118,83 @@ citecolor=black,urlcolor=black]{hyperref}
 \newcommand{\divergence}{\mathrm{div\,}}  % дивергенция
 \newcommand{\gradient}  {\mathrm{grad\,}} % градиент
 \newcommand{\rotor}     {\mathrm{rot\,}}  %
+% title style
+\titleformat{\chapter}
+    {\centering\normalsize}
+    {\thechapter}
+    {8pt}{\MakeUppercase}
+\titleformat{\section}
+    {\centering\normalsize}
+    {\thesection}
+    {1em}{}
+\titleformat{\subsection}
+    {\centering\normalsize}
+    {\thesubsection}
+    {1em}{}
+  
+\titlespacing*{\chapter}{0pt}{-30pt}{8pt}
+\titlespacing*{\paragraph}{0pt}{-30pt}{8pt}
+\titlespacing*{\section}{\parindent}{*4}{*4}
+\titlespacing*{\subsection}{\parindent}{*4}{*4}
+
+\makeatletter
+
+\renewcommand{\@biblabel}[1]{#1} 
+
+% bibliography bibitem item indent
+\renewenvironment{thebibliography}[1]
+    {\chapter*{\bibname}%
+    \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
+    \list{\@biblabel{\@arabic\c@enumiv}}%
+        {\settowidth\labelwidth{\@biblabel{#1}}%
+        \leftmargin=0pt
+        \itemindent=50pt
+        \@openbib@code
+        \usecounter{enumiv}%
+        \let\p@enumiv\@empty
+        \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+    \sloppy
+    \clubpenalty4000
+    \@clubpenalty \clubpenalty
+    \widowpenalty4000%
+    \sfcode`\.\@m}
+        {\def\@noitemerr
+        {\@latex@warning{Empty `thebibliography' environment}}%
+    \endlist}
+    
+\makeatother
+
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1\textwidth}}
+\renewcommand{\arraystretch}{1.2}
+
+\DeclareCaptionLabelFormat{figure}{Рисунок #2}
+\DeclareCaptionLabelFormat{table}{Таблица #2}
+\DeclareCaptionLabelSeparator{sep}{~---~}
+\captionsetup{labelsep=sep, justification=centering, font=small}
+\captionsetup[figure]{labelformat=figure}
+\captionsetup[table]{labelformat=table}
+
+\renewcommand{\cfttoctitlefont}{\normalfont\hspace{0.38\textwidth}}
+\renewcommand{\cftbeforetoctitleskip}{-1em}
+\renewcommand{\cftchapfont}{\normalsize}
+\renewcommand{\cftsecfont}{\hspace{-21pt}}
+\renewcommand{\cftsubsecfont}{\hspace{-53pt}}
+\renewcommand{\cftbeforechapskip}{0em}
+\renewcommand{\cftparskip}{-1mm}
+\renewcommand{\cftdotsep}{1}
+\renewcommand{\cftsecpresnum}{}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecaftersnum}{.}
+\renewcommand{\cftsubsecaftersnum}{.}
+\setcounter{tocdepth}{2}
+
+\renewcommand{\theenumi}{\arabic{enumi}}
+\renewcommand{\labelenumi}{\arabic{enumi})}
+\renewcommand{\theenumii}{.\arabic{enumii}}
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii})}
+\renewcommand{\theenumiii}{.\arabic{enumiii}}
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii})}
 
 \begin{document}
 \onehalfspacing
