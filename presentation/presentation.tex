@@ -27,19 +27,19 @@
 \newcommand{\der}[2]  {\frac{d #1}{d #2}}
 \newcommand{\dder}[2] {\frac{d^2 #1}{d {#2}^2}}
 
-\newcommand{\const}{\mathrm{const}}                     
-\newcommand{\average}[1]{\left\langle #1 \right\rangle} 
-\newcommand{\abs}[1]{\left| #1 \right|}                 
-\newcommand{\ds}{\displaystyle}                         
+\newcommand{\const}{\mathrm{const}}
+\newcommand{\average}[1]{\left\langle #1 \right\rangle}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\ds}{\displaystyle}
 \newcommand{\D}{\Delta}
-\newcommand{\dotunder}[1]{\d{#1}} 
+\newcommand{\dotunder}[1]{\d{#1}}
 \renewcommand{\d}{\delta}
 \newcommand{\eps}{\varepsilon}
 \renewcommand{\phi}{\varphi}
 
-\newcommand{\divergence}{\mathrm{div\,}}  
-\newcommand{\gradient}  {\mathrm{grad\,}} 
-\newcommand{\rotor}     {\mathrm{rot\,}}  
+\newcommand{\divergence}{\mathrm{div\,}}
+\newcommand{\gradient}  {\mathrm{grad\,}}
+\newcommand{\rotor}     {\mathrm{rot\,}}
 
 \begin{document}
   \frame{\titlepage}
@@ -65,143 +65,134 @@
 \end{frame}
   \begin{frame}
     \frametitle{Уравнение Нернста--Планка}
-    \[
-        j_k = -\frac{z_k}{\abs{z_k}}u_kRT\pder{c_k}{x} -
-        \abs{z_k}u_kc_kF\pder{\phi}{x}.
+    \begin{equation}
+        j = -\frac{z}{\abs{z}}uRT\pder{c}{x} -
+        \abs{z}ucF\pder{\phi}{x}.
         \label{eq:nernst-plank}
-    \]
+    \end{equation}
 
-      \textbf{Приближённое решение Планка}
-      \[
-          c(x) = \chi x + c(0),\ \chi = \frac{c(\delta)-c(0)}{\delta},
-      \]
-      \[
-          \phi = \frac{\alpha}{\chi}\ln\frac{\chi\delta + c(0)}{c(0)},
-          \ \alpha = \frac{\phi[c(\delta) - c(0)]}
-          {\delta\ln[c(\delta) / c(0)]}.
-      \]
-      \textbf{Приближённое решение Гольдмана}
-      \[
+      Приближённое решение Планка
+      \begin{equation}
+          c(x) = \chi x + c(0),\ \chi = \frac{c(d)-c(0)}{d},
+      \end{equation}
+      \begin{equation}
+          \phi = \frac{\alpha}{\chi}\ln\frac{\chi d + c(0)}{c(0)},
+          \ \alpha = \frac{\phi[c(d) - c(0)]}
+          {d\ln[c(d) / c(0)]}.
+      \end{equation}
+      Приближённое решение Гольдмана
+      \begin{equation}
           \phi(x) = \phi(0) - Ex,
-      \]
-      \[
-          c_k(x) = c_k(0) + [c_k(\delta) - c_k(0)]
-          \frac{e^{z_k\beta Ex} - 1}{e^{z_k\beta E\delta} - 1}.
-      \]
+      \end{equation}
+      \begin{equation}
+          c(x) = c(0) + [c(d) - c(0)]
+          \frac{e^{z\beta Ex} - 1}{e^{z\beta Ed} - 1}.
+      \end{equation}
   \end{frame}
   \begin{frame}
       \frametitle{Нестационарное уравнение}
-        \[
-          j = -\frac{z}{|z|}ukT\pder{n}{x} - |z|nue\pder{\phi}{x}.
-        \]
-        \[
+        \begin{equation}
+          j = -\frac{z}{|z|}uRT\pder{c}{x} - |z|ucF\pder{\phi}{x}.
+        \end{equation}
+        \begin{equation}
             \pder{\rho}{t} + \divergence\vec{j} = 0.
-        \]
-        Учитывая, что \( \rho = nez \), получим уравнение
-        \[
-            \pder{n}{t} = \frac{ukT}{e|z|}\ppder{n}{x} +
-            \frac{z}{|z|}u\pder{\phi}{x}\pder{n}{x} +
-            \frac{z}{|z|}u\ppder{\phi}{x}n.
-        \]
+        \end{equation}
+        Учитывая, что \( \rho = zcF \), получим уравнение
+        \begin{equation}
+            \pder{c}{t} = \frac{uRT}{F|z|}\ppder{c}{x} +
+            \frac{z}{|z|}u\pder{\phi}{x}\pder{c}{x} +
+            \frac{z}{|z|}u\ppder{\phi}{x}c.
+        \end{equation}
   \end{frame}
   \begin{frame}
       \frametitle{Решение для планковского и гольдмановского приближений}
-      \textbf{Планковское приближение}
 
-      \begin{minipage}{.3\textwidth}
+      \begin{minipage}{.47\textwidth}
+      \textbf{Планковское приближение}
           \begingroup
 \everymath{\scriptstyle}
 \scriptsize
         \begin{align*}
-        & \pder{n}{\tau} = \ppder{n}{\xi} - wg(\xi)\pder{n}{\xi} + wg^2(\xi)n,
+        & \pder{c}{\tau} = \ppder{c}{\xi} - wg(\xi)\pder{c}{\xi} + wg^2(\xi)c,
             \ \xi\in(0,1) \\
         & \tau = \frac{D}{d^2}t,\ \xi = \frac{x}{d},\ w = \frac{vd}{D},
-        \ g(\xi) = \frac{1}{\xi - \frac{n_{out}}{n_{out} - n_{in}}},\\
-        & n(0, \tau) = n_{out},\ \tau>0 \\
-        & n(1, \tau) = n_{in},\ \tau>0 \\
-        & n(\xi, 0) = 0,\ \xi\in(0,1).
+        \ g(\xi) = \frac{1}{\xi - \frac{c_{out}}{c_{out} - c_{in}}},\\
+        & c(0, \tau) = c_{out},\ \tau>0 \\
+        & c(1, \tau) = c_{in},\ \tau>0 \\
+        & c(\xi, 0) = 0,\ \xi\in(0,1).
     \end{align*}
 \endgroup
 \end{minipage}\hfill
-      \begin{minipage}{.3\textwidth}
-    \begin{figure}[H]
-    \begin{center}
-        \includegraphics[width=\textwidth]{../plots/linear_conc}
-    \end{center}
-    \end{figure}
-\end{minipage}
-
-
-      \textbf{Гольдмановское приближение}
-
       \begin{minipage}{.47\textwidth}
+      \textbf{Гольдмановское приближение}
 \begingroup
 \everymath{\scriptstyle}
 \scriptsize
         \begin{align*}
-            & \pder{n}{\tau} = \ppder{n}{\xi} -
-                w\pder{n}{\xi},\ \xi\in(0,1) \\
+            & \pder{c}{\tau} = \ppder{c}{\xi} -
+                w\pder{c}{\xi},\ \xi\in(0,1) \\
             & \tau = \frac{D}{d^2}t,\ \xi = \frac{x}{d},\ w = \frac{vd}{D},\\
-            & n(0, \tau) = n_{out},\ \tau>0 \\
-            & n(1, \tau) = n_{in},\ \tau>0 \\
-            & n(\xi, 0) = 0,\ \xi\in(0,1).
+            & c(0, \tau) = c_{out},\ \tau>0 \\
+            & c(1, \tau) = c_{in},\ \tau>0 \\
+            & c(\xi, 0) = 0,\ \xi\in(0,1).
         \end{align*}
 \endgroup
     \end{minipage}\hfill
-      \begin{minipage}{.3\textwidth}
-     \begin{figure}[H]
+\end{frame}
+\begin{frame}
+    \begin{figure}[H]
     \begin{center}
-        \includegraphics[width=\textwidth]{../plots/linear_field}
+        \includegraphics[width=.47\textwidth]{../plots/linear_conc}
+    \hfill
+        \includegraphics[width=.47\textwidth]{../plots/linear_field}
     \end{center}
     \end{figure}
-\end{minipage}
 
 
   \end{frame}
   \begin{frame}
       \frametitle{Учёт уравнения Пуассона}
-      \[
-          E = E_{ex} + E_{in}.
-      \]
-      \[
-        \pder{E_{in}}{x} = \frac{cFz}{\eps\eps_0},\quad
-        c = \frac{\eps\eps_0}{Fz}\pder{E_{in}}{x}.
-    \]
-    \[
+      \begin{equation}
+        \pder{E}{x} = \frac{cFz}{\eps\eps_0},\quad
+        c = \frac{\eps\eps_0}{Fz}\pder{E}{x}.
+    \end{equation}
+    \begin{equation}
         j = \eps\eps_0
-            \left(-D_i\ppder{E_{in}}{x}+\frac{z_i}{|z_i|}u_iE\pder{E_{in}}{x}\right).
+            \left(-D\ppder{E}{x}+\frac{z}{|z|}uE\pder{E}{x}\right).
         \label{eq:j_from_E}
-    \]
-    \[
+    \end{equation}
+    \begin{equation}
         \pder{\rho}{t} + \pder{j}{x} = 0.
-    \]
-    \[
-        \pder{j}{x} = -\eps\eps_0\pcder{E_{in}}{x}{t}.
+    \end{equation}
+    \begin{equation}
+        \pder{j}{x} = -\eps\eps_0\pcder{E}{x}{t}.
         \label{eq:displacement-current}
-    \]
-    \[
+    \end{equation}
+    \begin{equation}
         \pcder{E}{x}{t} = D\frac{\partial^3{E}}{\partial x^3} -
         \frac{z}{\abs{z}}\frac{u}{2}\ppder{E^2}{x}.
         \label{eq:epic-equation}
-    \]
+    \end{equation}
     Граничное условие
-    \[
+    \begin{equation}
         \left.\pder{E}{x}\right|_{x=0} = \frac{Fz}{\eps\eps_0}c(0),\quad
         \left.\pder{E}{x}\right|_{x=d} = \frac{Fz}{\eps\eps_0}c(d).
-    \]
+    \end{equation}
     \end{frame}
   \begin{frame}
     \frametitle{Добавление СВЧ-поля}
-    \[
-        E = E_m e^{i\omega t} + E^{(0)} + E^{(1)} + \ldots,\ |E_m| << E^{(0)}.
-    \]
-    \begin{gather*}
+    \begin{equation}
+        E = \underbrace{E_m e^{i\omega t}}_\text{возмущение} +
+        \underbrace{E^{(0)}}_\text{стационарное поле} +
+        E^{(1)} + \ldots,\ |E_m| << E^{(0)}.
+    \end{equation}
+    \begin{gather}
     \pcder{E^{(1)}}{x}{t} = D\frac{\partial^3 E^{(1)}}{\partial x^3} +
     \frac{uzE^{(0)}}{\abs{z}}\ppder{E^{(1)}}{x} +
-    2\frac{uz}{\abs{z}}\pder{E^{(0)}}{x}\pder{E^{(1)}}{x} +\\+
+    2\frac{uz}{\abs{z}}\pder{E^{(0)}}{x}\pder{E^{(1)}}{x} +\nonumber \\+
     \frac{uz}{\abs{z}}\ppder{E^{(0)}}{x} E^{(1)} +
     \frac{uz}{\abs{z}}\ppder{E^{(0)}}{x} E_m e^{i\omega t}.
-\end{gather*}
+\end{gather}
   \end{frame}
   \begin{frame}
       \frametitle{Заключение}
