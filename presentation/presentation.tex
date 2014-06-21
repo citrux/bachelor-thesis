@@ -1,6 +1,25 @@
-\documentclass[10pt]{beamer}
+\documentclass[10pt,pdf]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[russian]{babel}
+
+\usepackage{beamerthemesplit}
+\usetheme[numbers, minimal, nonav, nologo]{Statmod}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{blocks}[rounded]
+\setbeamertemplate{title page}[default][colsep=-4bp,rounded=true]
+\setbeamertemplate{frametitle}[default][colsep=-4bp,rounded=true]
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor*{structure}{fg=black,bg=white}
+\setbeamercolor*{palette primary}{use=structure,fg=black,bg=structure.bg}
+\setbeamercolor*{palette secondary}{use=structure,fg=black,bg=structure.bg}
+\setbeamercolor*{palette tertiary}{use=structure,fg=black,bg=structure.bg}
+\setbeamerfont{footline}{series=\normalfont\small}
+\setbeamersize{text margin left=5mm, text margin right=5mm}
+
+\date{Волгоград, 2014}
+\title{Модификация уравнения Нернста--Планка для пассивного транспорта}
+\author{Абдрахманов В. Л., гр. Ф-469}
+\institute{Руководитель --- профессор, д.ф.-м.н. Шеин А. Г.}
 
 \newcommand{\pder}[2] {\frac{\partial #1}{\partial #2}}
 \newcommand{\ppder}[2]{\frac{\partial^2 #1}{\partial {#2}^2}}
@@ -22,10 +41,6 @@
 \newcommand{\gradient}  {\mathrm{grad\,}} 
 \newcommand{\rotor}     {\mathrm{rot\,}}  
 
-\usetheme{Hannover}
-\date{Волгоград, 2014}
-\title{Модификация уравнения Нернста--Планка для пассивного транспорта}
-\author{Абдрахманов В. Л.}
 \begin{document}
   \frame{\titlepage}
   \begin{frame}
