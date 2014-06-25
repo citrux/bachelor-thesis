@@ -46,48 +46,72 @@
   \begin{frame}
     \frametitle{Введение}
 
-    \textbf{Актуальность.} Экспериментально установлено, что наличие
-    высокочастотных полей влияет на процессы движения ионов, причем это
-    влияние в большой степени зависит от уровня падающей мощности.
-    Наличие высокочастотных полей в настоящее время является постоянным
-    фактором, поэтому изучение его влияния на живой организм необходимо.
-    Таким образом, создание моделей, позволяющих описать этот процесс
+    \textbf{Актуальность.} Наличие высокочастотных полей в настоящее 
+    время является постоянным фактором, поэтому изучение их влияния
+    на живой организм необходимо. Создание моделей, позволяющих описать
+    воздействие СВЧ-излучения на мембранный транспорт
     хотя бы с учетом ограничений и приближений, является актуальной
     задачей.
+    \vspace*{2em}
 
     \textbf{Цель работы} заключается в получении уравнений, описывающих
-влияние высокочастотных возмущений на ионные токи в мембранах. При
-рассмотрении задачи ионного транспорта в электродиффузионном подходе
-используется уравнение Нернста—Планка, которое применимо в
-стационарном случае, то есть когда ток постоянен. Так как электрические
-колебания не стационарный процесс, то необходимо модифицировать
-уравнение для нестационарного случая.
+    влияние высокочастотных полей на ионные токи в мембранах. При
+    рассмотрении задачи ионного транспорта в электродиффузионном подходе
+    используется уравнение Нернста—Планка, которое применимо в
+    стационарном случае, то есть когда ток постоянен. Так как 
+    электрические колебания --- нестационарный процесс, то необходимо 
+    модифицировать уравнение для нестационарного случая.
 \end{frame}
   \begin{frame}
     \frametitle{Уравнение Нернста--Планка}
+    \begin{figure}[H]
+        \center
+        \includegraphics[height=.5\textheight]{membrane}
+    \end{figure}
     \begin{equation}
         j = -\frac{z}{\abs{z}}uRT\pder{c}{x} -
         \abs{z}ucF\pder{\phi}{x}.
         \label{eq:nernst-plank}
     \end{equation}
-
+  \end{frame}
+  \begin{frame}
+      \begin{minipage}{.47\textwidth}
       Приближённое решение Планка
+    \begingroup
+    \everymath{\scriptstyle}
+    \scriptsize
       \begin{equation}
           c(x) = \chi x + c(0),\ \chi = \frac{c(d)-c(0)}{d},
       \end{equation}
       \begin{equation}
-          \phi = \frac{\alpha}{\chi}\ln\frac{\chi d + c(0)}{c(0)},
-          \ \alpha = \frac{\phi[c(d) - c(0)]}
-          {d\ln[c(d) / c(0)]}.
+          \phi(x) = \phi(0)
+          -\frac{\phi_0}{\ln[c(d) / c(0)]}\ln\frac{\chi x + c(0)}{c(0)}.
       \end{equation}
+      \endgroup
+      \begin{figure}[H]
+          \center
+          \includegraphics[height=.5\textheight]{planck}
+      \end{figure}
+      \end{minipage}\hfill
+      \begin{minipage}{.47\textwidth}
       Приближённое решение Гольдмана
+    \begingroup
+    \everymath{\scriptstyle}
+    \scriptsize
       \begin{equation}
-          \phi(x) = \phi(0) - Ex,
+          \phi(x) = \phi(0) - Ex, E = \frac{\phi_0}{d},
       \end{equation}
       \begin{equation}
           c(x) = c(0) + [c(d) - c(0)]
-          \frac{e^{z\beta Ex} - 1}{e^{z\beta Ed} - 1}.
+          \frac{e^{\alpha x} - 1}{e^{\alpha d} - 1},
+          \alpha = \frac{zFE}{RT}.
       \end{equation}
+      \endgroup
+      \begin{figure}[H]
+          \center
+          \includegraphics[height=.5\textheight]{goldman}
+      \end{figure}
+    \end{minipage}
   \end{frame}
   \begin{frame}
       \frametitle{Нестационарное уравнение}
@@ -99,16 +123,16 @@
         \end{equation}
         Учитывая, что \( \rho = zcF \), получим уравнение
         \begin{equation}
-            \pder{c}{t} = \frac{uRT}{F|z|}\ppder{c}{x} +
+            \pder{c}{t} = D\ppder{c}{x} +
             \frac{z}{|z|}u\pder{\phi}{x}\pder{c}{x} +
-            \frac{z}{|z|}u\ppder{\phi}{x}c.
+            \frac{z}{|z|}u\ppder{\phi}{x}c,\quad D = \frac{uRT}{F|z|}.
         \end{equation}
   \end{frame}
   \begin{frame}
       \frametitle{Решение для планковского и гольдмановского приближений}
 
       \begin{minipage}{.47\textwidth}
-      \textbf{Планковское приближение}
+      Планковское приближение
           \begingroup
 \everymath{\scriptstyle}
 \scriptsize
@@ -124,7 +148,7 @@
 \endgroup
 \end{minipage}\hfill
       \begin{minipage}{.47\textwidth}
-      \textbf{Гольдмановское приближение}
+      Гольдмановское приближение
 \begingroup
 \everymath{\scriptstyle}
 \scriptsize
@@ -181,10 +205,13 @@
     \end{frame}
   \begin{frame}
     \frametitle{Добавление СВЧ-поля}
+    \[
+        E_m << E^{(0)}
+    \]
     \begin{equation}
         E = \underbrace{E_m e^{i\omega t}}_\text{возмущение} +
         \underbrace{E^{(0)}}_\text{стационарное поле} +
-        E^{(1)} + \ldots,\ |E_m| << E^{(0)}.
+        E^{(1)} + \ldots.
     \end{equation}
     \begin{gather}
     \pcder{E^{(1)}}{x}{t} = D\frac{\partial^3 E^{(1)}}{\partial x^3} +

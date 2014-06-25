@@ -1,4 +1,7 @@
 all: bachelor-thesis.pdf
 
-%.pdf: %.tex
+%.pdf: %.tex plots
 	latexmk -pdf $<
+
+plots: solver.py
+	python solver.py
